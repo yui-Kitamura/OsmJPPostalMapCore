@@ -19,6 +19,7 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /** 
  * OSM郵便マップ向け共通処理
@@ -113,6 +114,26 @@ public class JpPostalUtil {
     
     /* OverpassAPIコール */
     private static OverpassApi overpassApi;
+    /** 429エラーハンドリング版
+     * @param maxRetry 最大再試行回数 min 1
+     * @param interval 試行の間隔秒数 */
+    public static List<OsmPoi> callOverpass(String queryBody, int maxRetry, int interval) throws IOException {
+        for (int tryCount = 0; tryCount<maxRetry; tryCount++) {
+            try {
+                return callOverpass(queryBody);
+            }catch (IllegalStateException e) {
+                try {
+                    TimeUnit.SECONDS.sleep(interval);
+                } catch (InterruptedException ie) {
+                    Thread.currentThread().interrupt();
+                    throw new IOException("Thread interrupted during retry", ie);
+                }
+                continue;
+            }
+        }
+        throw new IllegalStateException("Max retry count exceeded");
+    }
+
     /** overpassAPIをコールする. relation未対応
      * @param queryBody OverpassQLの抽出条件文
      * @return OverpassAPIから返ってきたPOIのリスト 

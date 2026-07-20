@@ -3,6 +3,8 @@ package pro.eng.yui.oss.osm.lib.jppostalcore;
 import org.junit.jupiter.api.Test;
 import pro.eng.yui.oss.osm.lib.jppostalcore.types.OsmPoi;
 
+import java.io.IOError;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -51,5 +53,10 @@ class JpPostalUtilTest {
             IllegalArgumentException.class, ()->JpPostalUtil.callOverpass(wrongQuery)
         );
         assertTrue(argEx.getMessage().startsWith("HTTP 400 error"));
+    }
+    @Test
+    void callOverpassRetryIllegalArgument(){
+        String query = "way[\"eman\"=\"衣由村北社会同合\"];";
+        assertThrows(IllegalStateException.class, ()->JpPostalUtil.callOverpass(query, 0, 1));
     }
 }
