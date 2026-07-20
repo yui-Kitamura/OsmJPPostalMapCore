@@ -116,7 +116,10 @@ public class JpPostalUtil {
     private static OverpassApi overpassApi;
     /** 429エラーハンドリング版
      * @param maxRetry 最大再試行回数 min 1
-     * @param interval 試行の間隔秒数 */
+     * @param interval 試行の間隔秒数
+     * @throws IOException 致命的失敗
+     * @throws IllegalStateException 最大試行回数到達してもなお成功しなかった場合
+     * */
     public static List<OsmPoi> callOverpass(String queryBody, int maxRetry, int interval) throws IOException {
         for (int tryCount = 0; tryCount<maxRetry; tryCount++) {
             try {
