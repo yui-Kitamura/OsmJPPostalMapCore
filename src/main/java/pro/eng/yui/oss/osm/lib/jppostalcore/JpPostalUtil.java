@@ -10,6 +10,10 @@ import java.time.ZoneId;
 import java.util.HashSet;
 import java.util.Set;
 
+/** 
+ * OSM郵便マップ向け共通処理
+ * @author yuiKITAMURA
+ * */
 public class JpPostalUtil {
 
     private static final ZoneId JST = ZoneId.of("Asia/Tokyo");
@@ -56,12 +60,14 @@ public class JpPostalUtil {
     
     private JpPostalUtil(){ /* this is a util class */ }
     
-    /** 今日が日本の祝日であるかを返します */
+    /** 今日が日本の祝日であるかを返します
+     * @return 今日が日本の祝日の場合<code>true</code>, 祝日ではない場合<code>false</code> */
     public static boolean isHoliday(){
         return isHoliday(LocalDate.now());
     }
     /** 指定日付が日本の祝日であるかを返します
-     * @param date 今年以後の指定日 */
+     * @param date 今年以後の指定日
+     * @return 指定された日付が日本の祝日の場合<code>true</code>, ただし今年以後のみ判定対象。*/
     public static boolean isHoliday(LocalDate date){
         return HOLIDAYS.contains(date);
     }
