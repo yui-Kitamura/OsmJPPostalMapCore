@@ -138,11 +138,16 @@ public class JpPostalUtil {
                 }
             } else {
                 int code = response.code();
-                if (400 <= code && code < 500) {
-                    throw new IllegalArgumentException("HTTP " + code + " error: " + response.message());
-                } else if (500 <= code) {
+                if (500 <= code) {
                     throw new IOException("HTTP " + code + " error: " + response.message());
                 }
+                if (429 == code) {
+                    throw new IllegalStateException("HTTP 429" + response.message());
+                }
+                if (400 <= code) {
+                    throw new IllegalArgumentException("HTTP " + code + " error: " + response.message());
+                }
+                throw new RuntimeException(response.message());
             }
         } catch (IOException e) {
             throw e;
