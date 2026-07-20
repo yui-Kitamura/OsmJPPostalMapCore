@@ -60,14 +60,17 @@ public class JpPostalUtil {
     
     private JpPostalUtil(){ /* this is a util class */ }
     
+    /* 祝日判定 */
     /** 今日が日本の祝日であるかを返します
-     * @return 今日が日本の祝日の場合<code>true</code>, 祝日ではない場合<code>false</code> */
+     * @return 今日が日本の祝日の場合<code>true</code>, 祝日ではない場合<code>false</code>
+     * */
     public static boolean isHoliday(){
         return isHoliday(LocalDate.now());
     }
     /** 指定日付が日本の祝日であるかを返します
      * @param date 今年以後の指定日
-     * @return 指定された日付が日本の祝日の場合<code>true</code>, ただし今年以後のみ判定対象。*/
+     * @return 指定された日付が日本の祝日の場合<code>true</code>, ただし今年以後のみ判定対象。
+     * */
     public static boolean isHoliday(LocalDate date){
         return HOLIDAYS.contains(date);
     }
