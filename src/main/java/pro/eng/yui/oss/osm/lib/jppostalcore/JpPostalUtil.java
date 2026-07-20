@@ -1,14 +1,24 @@
 package pro.eng.yui.oss.osm.lib.jppostalcore;
 
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import pro.eng.yui.oss.osm.lib.jppostalcore.api.overpass.OverpassApi;
+import pro.eng.yui.oss.osm.lib.jppostalcore.api.overpass.OverpassResponse;
+import pro.eng.yui.oss.osm.lib.jppostalcore.types.OsmPoi;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /** 
  * OSM郵便マップ向け共通処理
@@ -18,9 +28,15 @@ public class JpPostalUtil {
 
     private static final ZoneId JST = ZoneId.of("Asia/Tokyo");
     private static final Set<LocalDate> HOLIDAYS = new HashSet<>();
+    private static Properties buildInfo = new Properties();
 
     /* initialize */
     static {
+        /* prop取得 */
+        try (InputStream is = JpPostalUtil.class.getResourceAsStream("/build-config.properties")) {
+            buildInfo.load(is);
+        }catch (IOException ignore){}
+        
         /* 祝日情報CSV 取得&パース */
         int currentYear = LocalDate.now(JST).getYear();
         try {
@@ -56,6 +72,26 @@ public class JpPostalUtil {
             }
         }catch (Exception ignore) {
         }
+        /* OverpassAPI */
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(chain -> {
+                    Request request = chain.request().newBuilder()
+                            .header("User-Agent", "OsmJPPostalMapCore/" +  buildInfo.getProperty("version"))
+                            .build();
+                    return chain.proceed(request);
+                })
+                .build();
+        Retrofit overpassRetrofit = new Retrofit.Builder()
+                .baseUrl("https://overpass-api.de/api/")
+                .client(client.newBuilder().addInterceptor(chain -> {
+                    Request request = chain.request().newBuilder()
+                            .header("Accept", "application/json")
+                            .build();
+                    return chain.proceed(request);
+                }).build())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        overpassApi = overpassRetrofit.create(OverpassApi.class);
     }
     
     private JpPostalUtil(){ /* this is a util class */ }
@@ -74,5 +110,51 @@ public class JpPostalUtil {
     public static boolean isHoliday(LocalDate date){
         return HOLIDAYS.contains(date);
     }
+    
+    /* OverpassAPIコール */
+    private static OverpassApi overpassApi;
+    /** overpassAPIをコールする. relation未対応
+     * @param queryBody OverpassQLの抽出条件文
+     * @return OverpassAPIから返ってきたPOIのリスト 
+     * */
+    public static List<OsmPoi> callOverpass(String queryBody) throws IOException {
+        String query = "[out:json][timeout:60];" + queryBody + "out meta center qt;";
 
+        List<OsmPoi> resultPois = new ArrayList<>();
+        try {
+            Response<OverpassResponse> response = overpassApi.query(query).execute();
+            if (response.isSuccessful() && response.body() != null) {
+                for (OverpassResponse.Element element : response.body().getElements()) {
+                    double lat = element.getLat();
+                    double lon = element.getLon();
+                    if ("way".equals(element.getType()) && element.getCenter() != null) {
+                        lat = element.getCenter().getLat();
+                        lon = element.getCenter().getLon();
+                    }
+
+                    resultPois.add(new OsmPoi(
+                            element.getId(), lat, lon, element.getType(), element.getTags())
+                    );
+                }
+            } else {
+                int code = response.code();
+                if (400 <= code && code < 500) {
+                    throw new IllegalArgumentException("HTTP " + code + " error: " + response.message());
+                } else if (500 <= code) {
+                    throw new IOException("HTTP " + code + " error: " + response.message());
+                }
+            }
+        } catch (IOException e) {
+            throw e;
+        }
+
+        return resultPois;
+    }
+    
+    /* OSM API コール */
+    
+    
+    /* opening_hours, collection_times 処理 */
+    
+    
 }

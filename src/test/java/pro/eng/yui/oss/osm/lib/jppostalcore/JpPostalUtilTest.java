@@ -1,13 +1,16 @@
 package pro.eng.yui.oss.osm.lib.jppostalcore;
 
 import org.junit.jupiter.api.Test;
+import pro.eng.yui.oss.osm.lib.jppostalcore.types.OsmPoi;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class JpPostalUtilTest {
 
+    /* 祝日判定 */
     @Test
     void isHolidayYes() {
         LocalDate date = LocalDate.of(LocalDate.now().getYear(), 1,1);
@@ -22,5 +25,31 @@ class JpPostalUtilTest {
     void isHolidayNoSupportForLastYear(){
         LocalDate date = LocalDate.of(LocalDate.now().getYear()-1, 1,1);
         assertFalse(JpPostalUtil.isHoliday(date));
+    }
+    
+    /* OverpassAPIコール */
+    @Test
+    void callOverpass(){
+        String query = "node[\"name\"=\"合同会社北村由衣\"];";
+        List<OsmPoi> result = assertDoesNotThrow(()->JpPostalUtil.callOverpass(query));
+        assertEquals(1, result.size());
+        OsmPoi poi = result.getFirst();
+        assertEquals(11608885454L, poi.getId());
+        assertEquals("node", poi.getType());
+        assertEquals("合同会社北村由衣", poi.getTag("name"));
+    }
+    @Test
+    void callOverpassEmpty(){
+        String query = "way[\"eman\"=\"衣由村北社会同合\"];";
+        List<OsmPoi> result = assertDoesNotThrow(()->JpPostalUtil.callOverpass(query));
+        assertTrue(result.isEmpty());
+    }
+    @Test
+    void callOverpass400(){
+        String wrongQuery = "what?";
+        IllegalArgumentException argEx = assertThrows(
+            IllegalArgumentException.class, ()->JpPostalUtil.callOverpass(wrongQuery)
+        );
+        assertTrue(argEx.getMessage().startsWith("HTTP 400 error"));
     }
 }
