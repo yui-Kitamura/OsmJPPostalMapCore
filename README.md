@@ -1,0 +1,2 @@
+# OsmJPPostalMapCore
+common lib
