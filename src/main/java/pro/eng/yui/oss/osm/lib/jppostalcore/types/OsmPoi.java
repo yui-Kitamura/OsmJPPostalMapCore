@@ -27,14 +27,19 @@ public class OsmPoi {
         this.type = type;
         this.tags = tags;
     }
-
+    /** OSMのPOI-ID */
     public long getId() { return id; }
+    /** nodeまたはwayのcenter緯度 */
     public double getLat() { return lat; }
+    /** nodeまたはwayのcenter経度 */
     public double getLon() { return lon; }
     /** node or way */
     public String getType() { return type; }
+    /** POIに設定されているすべてのタグ */
     public Map<String, String> getTags() { return tags; }
-    
+    /** POIに設定されているタグの値
+     * @param key タグのキー文字列
+     * @return 設定されている場合その値。無い場合<code>null</code>*/
     public String getTag(String key) {
         return tags != null ? tags.get(key) : null;
     }
