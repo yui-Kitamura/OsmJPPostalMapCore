@@ -55,6 +55,16 @@ class JpPostalUtilTest {
         assertTrue(argEx.getMessage().startsWith("HTTP 400 error"));
     }
     @Test
+    void callOverpassWithRetry(){
+        String query = "node[\"name\"=\"合同会社北村由衣\"];";
+        List<OsmPoi> result = assertDoesNotThrow(()->JpPostalUtil.callOverpass(query, 3, 1));
+        assertEquals(1, result.size());
+        OsmPoi poi = result.getFirst();
+        assertEquals(11608885454L, poi.getId());
+        assertEquals("node", poi.getType());
+        assertEquals("合同会社北村由衣", poi.getTag("name"));
+    }
+    @Test
     void callOverpassRetryIllegalArgument(){
         String query = "way[\"eman\"=\"衣由村北社会同合\"];";
         assertThrows(IllegalStateException.class, ()->JpPostalUtil.callOverpass(query, 0, 1));

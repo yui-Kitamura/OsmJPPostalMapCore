@@ -124,7 +124,7 @@ public class JpPostalUtil {
         for (int tryCount = 0; tryCount<maxRetry; tryCount++) {
             try {
                 return callOverpass(queryBody);
-            }catch (IllegalStateException e) {
+            }catch (IllegalStateException|IOException e) {
                 try {
                     TimeUnit.SECONDS.sleep(interval);
                 } catch (InterruptedException ie) {
