@@ -14,4 +14,14 @@ public class OverpassQuery {
             "  nw(area.a)[\"amenity\"=\"post_office\"][\"operator\"=\"日本郵便\"];" +
             ");";
     }
+    /** 座標中心から20kmを抽出 */
+    public static String getPostSearchQuery(long lat, long lon, int km){
+        int m = km * 1_000;
+        return
+            "(" +
+            "  node(around:"+m+"," + lat + "," + lon + ")[\"amenity\"=\"post_box\"];" +
+            "  nw(around:"+m+"," + lat + "," + lon + ")[\"amenity\"=\"post_office\"][!\"operator\"];" +
+            "  nw(around:"+m+"," + lat + "," + lon + ")[\"amenity\"=\"post_office\"][\"operator\"=\"日本郵便\"];" +
+            ");";
+    }
 }
