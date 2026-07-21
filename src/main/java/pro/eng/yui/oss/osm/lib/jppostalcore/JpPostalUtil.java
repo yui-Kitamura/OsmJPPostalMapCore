@@ -263,7 +263,31 @@ public class JpPostalUtil {
     }
     /** 都道府県名からコードを返します */
     public static int getPrefecture(String name){
-        return getPrefectures().get(name);
+        return getPrefectures().getOrDefault(name, -99);
+    }
+    /** 都道府県のデータセットをDataSourceから取得します */
+    public static List<OsmPoi> getPoiData(String prefName){
+        int prefCode = getPrefecture(prefName);
+        if (prefCode < 0){ throw new IllegalArgumentException("都道府県名不正"); }
+        List<OsmPoi> prefectureDataList = new ArrayList<>();
+
+        try (HttpClient client = HttpClient.newBuilder().build()){
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create("jPostal_"+ String.format("%02d",prefCode) + ".json"))
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            Gson gson = new Gson();
+            JsonArray jsonArray = gson.fromJson(response.body(), JsonArray.class);
+
+            for (int i = 0; i < jsonArray.size(); i++) {
+                JsonObject obj = jsonArray.get(i).getAsJsonObject();
+                prefectureDataList.add(new OsmPoi(obj));
+            }
+        }catch (IOException | InterruptedException ignore) { }
+        return prefectureDataList;
     }
 
     /* opening_hours, collection_times 処理 */

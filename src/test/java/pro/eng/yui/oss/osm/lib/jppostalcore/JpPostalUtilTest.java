@@ -87,4 +87,8 @@ class JpPostalUtilTest {
     void getPrefecture(){
         assertEquals(19, JpPostalUtil.getPrefecture("山梨県"));
     }
+    @Test
+    void getPrefectureNotExist(){
+        assertEquals(0, JpPostalUtil.getPrefecture("海無県"));
+    }
 }
