@@ -8,6 +8,7 @@ import pro.eng.yui.oss.osm.lib.jppostalcore.types.OsmPoi;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -73,5 +74,17 @@ class JpPostalUtilTest {
     void callOverpassRetryIllegalArgument(){
         String query = "way[\"eman\"=\"衣由村北社会同合\"];";
         assertThrows(IllegalStateException.class, ()->JpPostalUtil.callOverpass(query, 3, 10));
+    }
+    
+    @Test
+    void getPrefectures(){
+        Map<String, Integer> result = assertDoesNotThrow(()->{ return JpPostalUtil.getPrefectures(); });
+        assertEquals(47, result.size());
+        assertEquals(19, result.get("山梨県"));
+    }
+    
+    @Test
+    void getPrefecture(){
+        assertEquals(19, JpPostalUtil.getPrefecture("山梨県"));
     }
 }
