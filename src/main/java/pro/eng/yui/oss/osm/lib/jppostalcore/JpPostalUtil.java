@@ -126,7 +126,7 @@ public class JpPostalUtil {
      * @throws IOException 致命的失敗
      * @throws IllegalStateException 最大試行回数到達してもなお成功しなかった場合
      * */
-    public static List<OsmPoi> callOverpass(String queryBody, int maxRetry, int interval) throws IOException {
+    public static List<OsmPoi> callOverpass(String queryBody, int maxRetry, int interval) throws IOException,IllegalStateException {
         for (int tryCount = 0; tryCount<maxRetry; tryCount++) {
             try {
                 return callOverpass(queryBody);
@@ -147,7 +147,7 @@ public class JpPostalUtil {
      * @param queryBody OverpassQLの抽出条件文
      * @return OverpassAPIから返ってきたPOIのリスト 
      * */
-    public static List<OsmPoi> callOverpass(String queryBody) throws IOException {
+    public static List<OsmPoi> callOverpass(String queryBody) throws IOException,IllegalStateException {
         String query = "[out:json][timeout:60];" + queryBody + "out meta center qt;";
 
         List<OsmPoi> resultPois = new ArrayList<>();
