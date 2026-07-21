@@ -2,6 +2,7 @@ package pro.eng.yui.oss.osm.lib.jppostalcore;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import pro.eng.yui.oss.osm.lib.jppostalcore.api.osm.OsmApi;
 import pro.eng.yui.oss.osm.lib.jppostalcore.api.overpass.OverpassApi;
 import pro.eng.yui.oss.osm.lib.jppostalcore.api.overpass.OverpassResponse;
 import pro.eng.yui.oss.osm.lib.jppostalcore.types.OsmPoi;
@@ -78,21 +79,24 @@ public class JpPostalUtil {
                 .addInterceptor(chain -> {
                     Request request = chain.request().newBuilder()
                             .header("User-Agent", "OsmJPPostalMapCore/" +  buildInfo.getProperty("version"))
+                            .header("Accept", "application/json")
                             .build();
                     return chain.proceed(request);
                 })
                 .build();
         Retrofit overpassRetrofit = new Retrofit.Builder()
                 .baseUrl("https://overpass-api.de/api/")
-                .client(client.newBuilder().addInterceptor(chain -> {
-                    Request request = chain.request().newBuilder()
-                            .header("Accept", "application/json")
-                            .build();
-                    return chain.proceed(request);
-                }).build())
+                .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         overpassApi = overpassRetrofit.create(OverpassApi.class);
+        /* OpenStreetMap API */
+        Retrofit osmRetrofit  = new Retrofit.Builder()
+                .baseUrl("https://www.openstreetmap.org/")
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        osmApi = osmRetrofit.create(OsmApi.class);
     }
     
     private JpPostalUtil(){ /* this is a util class */ }
@@ -181,8 +185,9 @@ public class JpPostalUtil {
     }
     
     /* OSM API コール */
-    
-    
+    private static final OsmApi osmApi;
+
+
     /* opening_hours, collection_times 処理 */
     
     
