@@ -157,8 +157,8 @@ public class JpPostalUtil {
                     }
 
                     resultPois.add(new OsmPoi(
-                            element.getId(), lat, lon, element.getType(), element.getTags())
-                    );
+                        element.getId(), lat, lon, element.getType(), element.getTags(),element.getVersion()
+                    ));
                 }
             } else {
                 int code = response.code();

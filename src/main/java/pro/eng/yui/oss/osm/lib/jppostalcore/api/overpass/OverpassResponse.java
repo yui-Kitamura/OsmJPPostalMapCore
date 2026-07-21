@@ -23,6 +23,7 @@ public class OverpassResponse {
         private String type;
         private Center center;
         private Map<String, String> tags;
+        private long version;
 
         public long getId() { return id; }
         public double getLat() { return lat; }
@@ -30,6 +31,7 @@ public class OverpassResponse {
         public String getType() { return type; }
         public Center getCenter() { return center; }
         public Map<String, String> getTags() { return tags; }
+        public long getVersion() { return version; }
     }
 
     public static class Center {

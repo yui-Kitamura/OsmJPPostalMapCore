@@ -12,6 +12,7 @@ public class OsmPoi {
     private final double lon;
     private final String type; // "node" or "way"
     private final Map<String, String> tags;
+    private final long ver;
 
     /**
      * @param id OSM要素ID
@@ -20,12 +21,13 @@ public class OsmPoi {
      * @param type 要素タイプ ("node" または "way")
      * @param tags タグのマップ
      */
-    public OsmPoi(long id, double lat, double lon, String type, Map<String, String> tags) {
+    public OsmPoi(long id, double lat, double lon, String type, Map<String, String> tags, long ver) {
         this.id = id;
         this.lat = lat;
         this.lon = lon;
         this.type = type;
         this.tags = tags;
+        this.ver = ver;
     }
     /** OSMのPOI-ID */
     public long getId() { return id; }
@@ -43,5 +45,7 @@ public class OsmPoi {
     public String getTag(String key) {
         return tags != null ? tags.get(key) : null;
     }
+    /** 取得時点のPOIバージョン */
+    public long getVer(){ return ver; }
 
 }

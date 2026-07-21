@@ -37,6 +37,7 @@ class JpPostalUtilTest {
         assertEquals(11608885454L, poi.getId());
         assertEquals("node", poi.getType());
         assertEquals("合同会社北村由衣", poi.getTag("name"));
+        assertTrue(1 < poi.getVer());
     }
     @Test
     void callOverpassEmpty(){
@@ -61,6 +62,7 @@ class JpPostalUtilTest {
         assertEquals(11608885454L, poi.getId());
         assertEquals("node", poi.getType());
         assertEquals("合同会社北村由衣", poi.getTag("name"));
+        assertTrue(1 < poi.getVer());
     }
     @Test
     void callOverpassRetryIllegalArgument(){
