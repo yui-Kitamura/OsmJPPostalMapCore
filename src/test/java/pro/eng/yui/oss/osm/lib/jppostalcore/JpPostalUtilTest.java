@@ -1,6 +1,9 @@
 package pro.eng.yui.oss.osm.lib.jppostalcore;
 
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import pro.eng.yui.oss.osm.lib.jppostalcore.types.OsmPoi;
 
 import java.time.LocalDate;
@@ -8,6 +11,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class JpPostalUtilTest {
 
     /* 祝日判定 */
@@ -28,6 +32,7 @@ class JpPostalUtilTest {
     }
     
     /* OverpassAPIコール */
+    @Order(1)
     @Test
     void callOverpass(){
         String query = "node[\"name\"=\"合同会社北村由衣\"];";
@@ -42,21 +47,21 @@ class JpPostalUtilTest {
     @Test
     void callOverpassEmpty(){
         String query = "way[\"eman\"=\"衣由村北社会同合\"];";
-        List<OsmPoi> result = assertDoesNotThrow(()->JpPostalUtil.callOverpass(query, 3, 5));
+        List<OsmPoi> result = assertDoesNotThrow(()->JpPostalUtil.callOverpass(query, 3, 10));
         assertTrue(result.isEmpty());
     }
     @Test
     void callOverpass400(){
         String wrongQuery = "what?";
         IllegalArgumentException argEx = assertThrows(
-            IllegalArgumentException.class, ()->JpPostalUtil.callOverpass(wrongQuery, 3, 5)
+            IllegalArgumentException.class, ()->JpPostalUtil.callOverpass(wrongQuery, 3, 10)
         );
         assertTrue(argEx.getMessage().startsWith("HTTP 400 error"));
     }
     @Test
     void callOverpassWithRetry(){
         String query = "node[\"name\"=\"合同会社北村由衣\"];";
-        List<OsmPoi> result = assertDoesNotThrow(()->JpPostalUtil.callOverpass(query, 3, 1));
+        List<OsmPoi> result = assertDoesNotThrow(()->JpPostalUtil.callOverpass(query, 3, 10));
         assertEquals(1, result.size());
         OsmPoi poi = result.getFirst();
         assertEquals(11608885454L, poi.getId());
@@ -67,6 +72,6 @@ class JpPostalUtilTest {
     @Test
     void callOverpassRetryIllegalArgument(){
         String query = "way[\"eman\"=\"衣由村北社会同合\"];";
-        assertThrows(IllegalStateException.class, ()->JpPostalUtil.callOverpass(query, 0, 1));
+        assertThrows(IllegalStateException.class, ()->JpPostalUtil.callOverpass(query, 3, 10));
     }
 }
