@@ -19,7 +19,7 @@ public class ChangeSetInfo {
     }
     public ChangeSetInfo(long id){
         this.id = id;
-        this.comment = null; this.createdBy = null; this.otherTags = null;
+        this.comment = ""; this.createdBy = ""; this.otherTags = null;
     }
     
     public long getId(){
