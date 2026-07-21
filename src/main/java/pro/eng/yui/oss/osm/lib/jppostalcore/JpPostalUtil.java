@@ -2,6 +2,8 @@ package pro.eng.yui.oss.osm.lib.jppostalcore;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import pro.eng.yui.oss.osm.lib.jppostalcore.api.osm.ChangeSetInfo;
+import pro.eng.yui.oss.osm.lib.jppostalcore.api.osm.CreateXML;
 import pro.eng.yui.oss.osm.lib.jppostalcore.api.osm.OsmApi;
 import pro.eng.yui.oss.osm.lib.jppostalcore.api.overpass.OverpassApi;
 import pro.eng.yui.oss.osm.lib.jppostalcore.api.overpass.OverpassResponse;
@@ -186,7 +188,46 @@ public class JpPostalUtil {
     
     /* OSM API コール */
     private static final OsmApi osmApi;
+    /** ChangeSetを開く
+     * @return 採番されたChangesetID
+     * @throws IOException 通信失敗時などfail */
+    public static long callOsmCreateChangeset(String accessToken, ChangeSetInfo info) throws IOException{
+        String auth = "Bearer " + accessToken;
+        String xml = CreateXML.createChangeset(info);
 
+        Response<String> res = osmApi.createChangeset(auth, xml).execute();
+        if (res.isSuccessful() && res.body() != null) {
+            return Long.parseLong(res.body().trim());
+        }
+        throw new IOException(res.message());
+
+    }
+    /** ChangeSetをクローズ（確定）する
+     * @throws IllegalStateException クローズ失敗時 */
+    public static void callOsmCloseChangeset(String accessToken, ChangeSetInfo id){
+        String auth = "Bearer " + accessToken;
+        try {
+            osmApi.closeChangeset(auth, id.getId()).execute();
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+    /** ChangeSetに追加/編集するPOIを乗せる
+     * @param accessToken OSMのTOKEN
+     * @param changeSetInfo idを格納してあること
+     * @param poi 対象POIの全情報 */
+    public static void callOsmCreateOrModifyElement(String accessToken, ChangeSetInfo changeSetInfo, OsmPoi poi) throws IOException{
+        String auth = "Bearer " + accessToken;
+        if (poi.getVer() == 0) {
+            String xml = CreateXML.createElement(changeSetInfo, poi);
+            Response<String> res = osmApi.createElement(auth, poi.getType(), xml).execute();
+            if (res.isSuccessful() == false){ throw new IOException(res.message()); }
+        }else {
+            String xml = CreateXML.modifyElement(changeSetInfo, poi);
+            Response<String> res = osmApi.updateElement(auth, poi.getType(), poi.getId(), xml).execute();
+            if (res.isSuccessful() == false){ throw new IOException(res.message()); }
+        }
+    }
 
     /* opening_hours, collection_times 処理 */
     

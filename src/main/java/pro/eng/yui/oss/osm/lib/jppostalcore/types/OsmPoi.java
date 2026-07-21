@@ -15,6 +15,7 @@ public class OsmPoi {
     private final long ver;
 
     /**
+     * 既存POI
      * @param id OSM要素ID
      * @param lat 緯度
      * @param lon 経度
@@ -29,6 +30,21 @@ public class OsmPoi {
         this.tags = tags;
         this.ver = ver;
     }
+    /** 新規POI */
+    public OsmPoi(double lat, double lon, String type, Map<String, String> tags){
+        this.id = 0; this.ver = 0;
+        this.lat = lat;
+        this.lon = lon;
+        this.type = type;
+        this.tags = tags;
+    }
+    /** 新規POIの情報更新
+     * @return 作成された新しいPOI情報 */
+    public OsmPoi created(long createdId, long ver){
+        if (id != 0 || ver != 0){ throw new IllegalStateException("already set"); }
+        return new OsmPoi(createdId, lat, lon, type, tags, ver);
+    }
+    
     /** OSMのPOI-ID */
     public long getId() { return id; }
     /** nodeまたはwayのcenter緯度 */
