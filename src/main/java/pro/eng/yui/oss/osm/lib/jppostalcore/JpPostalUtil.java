@@ -243,7 +243,7 @@ public class JpPostalUtil {
 
         try (HttpClient client = HttpClient.newBuilder().build()){
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("https://yui-kitamura.github.io/OsmJPPostalMapDataSource/data/master/pref.json"))
+                    .uri(URI.create("https://yui-kitamura.github.io/OsmJpPostalMapDataSource/data/master/pref.json"))
                     .GET()
                     .build();
 
@@ -273,7 +273,8 @@ public class JpPostalUtil {
 
         try (HttpClient client = HttpClient.newBuilder().build()){
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("jPostal_"+ String.format("%02d",prefCode) + ".json"))
+                    .uri(URI.create("https://yui-kitamura.github.io/OsmJpPostalMapDataSource/data/jPostal_"
+                            + String.format("%02d",prefCode) + ".json"))
                     .GET()
                     .build();
 
