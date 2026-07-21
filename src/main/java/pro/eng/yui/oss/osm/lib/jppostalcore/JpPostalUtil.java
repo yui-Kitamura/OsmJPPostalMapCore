@@ -194,6 +194,7 @@ public class JpPostalUtil {
     
     /* OSM API コール */
     private static final OsmApi osmApi;
+    public static OsmApi getOsmApi(){ return osmApi; }
     /** ChangeSetを開く
      * @return 採番されたChangesetID
      * @throws IOException 通信失敗時などfail */
