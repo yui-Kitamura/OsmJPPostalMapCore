@@ -13,6 +13,7 @@ public enum Days {
     
     private final String label;
     private final WeekDay dayType;
+    /** 平日/週末/祝日 */
     public enum WeekDay {
         WEEK_DAY, WEEKEND, HOLIDAY;
     }
@@ -21,8 +22,11 @@ public enum Days {
         this.label = label;
         this.dayType = dayType;
     }
-    
+    /** OSM形式の曜日表記を返します */
     public String getLabel(){ return label; }
+    /** 文字列から曜日を返します
+     * @return 文字列から解釈した曜日
+     * @throws IllegalArgumentException 解釈できなかった時 */
     public Days getFromLabel(String in){
         for (Days day: Days.values()) {
             if ((day.label.equalsIgnoreCase(in))) {
