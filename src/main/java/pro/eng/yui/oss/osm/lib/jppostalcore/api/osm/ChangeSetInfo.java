@@ -17,6 +17,10 @@ public class ChangeSetInfo {
         this.createdBy = createdBy;
         this.otherTags = otherTags;
     }
+    public ChangeSetInfo(long id){
+        this.id = id;
+        this.comment = null; this.createdBy = null; this.otherTags = null;
+    }
     
     public long getId(){
         return id;
