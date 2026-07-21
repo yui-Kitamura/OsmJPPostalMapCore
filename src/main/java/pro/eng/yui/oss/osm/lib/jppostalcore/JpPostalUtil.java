@@ -137,7 +137,7 @@ public class JpPostalUtil {
         throw new IllegalStateException("Max retry count exceeded");
     }
 
-    /** overpassAPIをコールする. relation未対応
+    /** overpassAPIをコールする
      * @param queryBody OverpassQLの抽出条件文
      * @return OverpassAPIから返ってきたPOIのリスト 
      * */
