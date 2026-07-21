@@ -73,7 +73,7 @@ class JpPostalUtilTest {
     @Test
     void callOverpassRetryIllegalArgument(){
         String query = "way[\"eman\"=\"衣由村北社会同合\"];";
-        assertThrows(IllegalStateException.class, ()->JpPostalUtil.callOverpass(query, 3, 10));
+        assertThrows(IllegalStateException.class, ()->JpPostalUtil.callOverpass(query, 0, 1));
     }
     
     @Test
