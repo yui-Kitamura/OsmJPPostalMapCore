@@ -3,8 +3,6 @@ package pro.eng.yui.oss.osm.lib.jppostalcore;
 import org.junit.jupiter.api.Test;
 import pro.eng.yui.oss.osm.lib.jppostalcore.types.OsmPoi;
 
-import java.io.IOError;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -33,7 +31,7 @@ class JpPostalUtilTest {
     @Test
     void callOverpass(){
         String query = "node[\"name\"=\"合同会社北村由衣\"];";
-        List<OsmPoi> result = assertDoesNotThrow(()->JpPostalUtil.callOverpass(query));
+        List<OsmPoi> result = assertDoesNotThrow(()->JpPostalUtil.callOverpass(query, 3, 5));
         assertEquals(1, result.size());
         OsmPoi poi = result.getFirst();
         assertEquals(11608885454L, poi.getId());
@@ -43,14 +41,14 @@ class JpPostalUtilTest {
     @Test
     void callOverpassEmpty(){
         String query = "way[\"eman\"=\"衣由村北社会同合\"];";
-        List<OsmPoi> result = assertDoesNotThrow(()->JpPostalUtil.callOverpass(query));
+        List<OsmPoi> result = assertDoesNotThrow(()->JpPostalUtil.callOverpass(query, 3, 5));
         assertTrue(result.isEmpty());
     }
     @Test
     void callOverpass400(){
         String wrongQuery = "what?";
         IllegalArgumentException argEx = assertThrows(
-            IllegalArgumentException.class, ()->JpPostalUtil.callOverpass(wrongQuery)
+            IllegalArgumentException.class, ()->JpPostalUtil.callOverpass(wrongQuery, 3, 5)
         );
         assertTrue(argEx.getMessage().startsWith("HTTP 400 error"));
     }
