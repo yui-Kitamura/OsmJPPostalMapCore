@@ -113,7 +113,7 @@ public class JpPostalUtil {
     }
     
     /* OverpassAPIコール */
-    private static OverpassApi overpassApi;
+    private static final OverpassApi overpassApi;
     /** 429エラーハンドリング版
      * @param maxRetry 最大再試行回数 min 1
      * @param interval 試行の間隔秒数
