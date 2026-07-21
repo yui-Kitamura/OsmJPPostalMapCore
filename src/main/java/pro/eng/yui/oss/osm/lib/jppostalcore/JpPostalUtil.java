@@ -11,6 +11,9 @@ import pro.eng.yui.oss.osm.lib.jppostalcore.types.OsmPoi;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,6 +22,9 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
@@ -227,6 +233,37 @@ public class JpPostalUtil {
             Response<String> res = osmApi.updateElement(auth, poi.getType(), poi.getId(), xml).execute();
             if (res.isSuccessful() == false){ throw new IOException(res.message()); }
         }
+    }
+    
+    /* JpPostalDatasource処理 */
+    /** 都道府県リスト
+     * @return 県名,コード のMap */
+    public static Map<String, Integer> getPrefectures() {
+        Map<String, Integer> prefectures = new HashMap<>();
+
+        try (HttpClient client = HttpClient.newBuilder().build()){
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create("https://yui-kitamura.github.io/OsmJPPostalMapDataSource/data/master/pref.json"))
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            Gson gson = new Gson();
+            JsonArray jsonArray = gson.fromJson(response.body(), JsonArray.class);
+
+            for (int i = 0; i < jsonArray.size(); i++) {
+                JsonObject obj = jsonArray.get(i).getAsJsonObject();
+                String name = obj.get("name").getAsString();
+                int code = Integer.parseInt(obj.get("code").getAsString());
+                prefectures.put(name, code);
+            }
+        }catch (IOException | InterruptedException ignore) { }
+        return prefectures;
+    }
+    /** 都道府県名からコードを返します */
+    public static int getPrefecture(String name){
+        return getPrefectures().get(name);
     }
 
     /* opening_hours, collection_times 処理 */
