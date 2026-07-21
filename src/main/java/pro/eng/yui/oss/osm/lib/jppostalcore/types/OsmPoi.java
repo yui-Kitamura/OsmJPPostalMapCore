@@ -1,5 +1,10 @@
 package pro.eng.yui.oss.osm.lib.jppostalcore.types;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
+import java.awt.image.Kernel;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -29,6 +34,19 @@ public class OsmPoi {
         this.type = type;
         this.tags = tags;
         this.ver = ver;
+    }
+    public OsmPoi(JsonObject json){
+        this.id = json.get("id").getAsLong();
+        this.lat = json.get("lat").getAsDouble();
+        this.lon = json.get("lon").getAsDouble();
+        this.type = json.get("type").getAsString();
+        this.ver = json.get("ver").getAsLong();
+        Map<String, JsonElement> tags = json.get("tags").getAsJsonObject().asMap();
+        Map<String, String> tagStr = new HashMap<>();
+        for (String k : tags.keySet()) {
+            tagStr.put(k,tags.get(k).getAsString());
+        }
+        this.tags = tagStr;
     }
     /** 新規POI */
     public OsmPoi(double lat, double lon, String type, Map<String, String> tags){
