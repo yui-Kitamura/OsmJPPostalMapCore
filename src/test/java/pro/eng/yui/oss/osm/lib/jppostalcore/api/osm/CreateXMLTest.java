@@ -38,7 +38,7 @@ class CreateXMLTest {
 
         String xml = CreateXML.createElement(info, poi);
 
-        assertTrue(xml.contains("<node id=\"0\" lat=\"35.0\" lon=\"135.0\" >"));
+        assertTrue(xml.contains("<node id=\"0\" changeset=\"123\" lat=\"35.0\" lon=\"135.0\" >"));
         assertTrue(xml.contains("<tag k=\"name\" v=\"POI &amp; Test\"/>"));
         
         String today = new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(new Date());
