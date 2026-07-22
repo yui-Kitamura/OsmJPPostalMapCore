@@ -276,7 +276,7 @@ public class JpPostalUtil {
         List<OsmPoi> prefectureDataList = new ArrayList<>();
 
         try{
-            Response<ResponseBody> res = dataSourceApi.masterPrefJson().execute();
+            Response<ResponseBody> res = dataSourceApi.getPrefData(String.format("%02d",prefCode)).execute();
             if (res.isSuccessful() == false) { throw new IOException(res.message()); }
 
             String jsonString = res.body().string();
