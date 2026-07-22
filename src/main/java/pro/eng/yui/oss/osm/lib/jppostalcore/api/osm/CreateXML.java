@@ -4,6 +4,7 @@ import pro.eng.yui.oss.osm.lib.jppostalcore.types.OsmPoi;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
@@ -52,9 +53,10 @@ public class CreateXML {
         xml.append("  <").append(poi.getType()).append(" ")
                 .append("id=\"").append(poi.getId()).append("\" ");
         if (isUpdate) {
-            xml.append("version=\"").append(poi.getVer()).append("\" ")
-                    .append("changeset=\"").append(id.getId()).append("\" ");
+            xml.append("version=\"").append(poi.getVer()).append("\" ");
         }
+        xml.append("changeset=\"").append(id.getId()).append("\" ");
+
         if ("node".equals(poi.getType())) {
             xml.append("lat=\"").append(poi.getLat())
                     .append("\" lon=\"").append(poi.getLon()).append("\" ");
@@ -62,7 +64,7 @@ public class CreateXML {
         xml.append(">\n");
 
         String today = new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(new Date());
-        Map<String, String> tags = poi.getTags();
+        Map<String, String> tags = new HashMap<>(poi.getTags());
         tags.put("check_date", today);
 
         for (Map.Entry<String, String> entry : tags.entrySet()) {
