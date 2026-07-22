@@ -86,7 +86,6 @@ public class JpPostalUtil {
                 .addInterceptor(chain -> {
                     Request request = chain.request().newBuilder()
                             .header("User-Agent", "OsmJPPostalMapCore/" +  buildInfo.getProperty("version"))
-                            .header("Accept", "application/json")
                             .build();
                     return chain.proceed(request);
                 })
