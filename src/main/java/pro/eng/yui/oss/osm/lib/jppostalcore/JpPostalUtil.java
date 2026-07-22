@@ -13,6 +13,7 @@ import pro.eng.yui.oss.osm.lib.jppostalcore.types.OsmPoi;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -100,6 +101,7 @@ public class JpPostalUtil {
         Retrofit osmRetrofit  = new Retrofit.Builder()
                 .baseUrl("https://www.openstreetmap.org/")
                 .client(client)
+                .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         osmApi = osmRetrofit.create(OsmApi.class);
