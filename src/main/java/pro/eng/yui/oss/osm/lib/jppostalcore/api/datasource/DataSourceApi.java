@@ -9,6 +9,6 @@ public interface DataSourceApi {
     @GET("data/master/pref.json")
     Call<ResponseBody> masterPrefJson();
 
-    @GET("data/jPostal_｛code}.json")
+    @GET("data/jPostal_{code}.json")
     Call<ResponseBody> getPrefData(@Path("code") String code);
 }
