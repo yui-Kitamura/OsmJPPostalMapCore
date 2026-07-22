@@ -282,7 +282,8 @@ public class JpPostalUtil {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
             Gson gson = new Gson();
-            JsonArray jsonArray = gson.fromJson(response.body(), JsonArray.class);
+            JsonObject prefDataObj = gson.fromJson(response.body(), JsonObject.class);
+            JsonArray jsonArray = prefDataObj.get("data").getAsJsonArray();
 
             for (int i = 0; i < jsonArray.size(); i++) {
                 JsonObject obj = jsonArray.get(i).getAsJsonObject();
