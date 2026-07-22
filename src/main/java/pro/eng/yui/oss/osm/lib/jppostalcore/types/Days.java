@@ -1,5 +1,7 @@
 package pro.eng.yui.oss.osm.lib.jppostalcore.types;
 
+import java.util.List;
+
 /** OSM形式の曜日 */
 public enum Days {
     MONDAY("Mo", WeekDay.WEEK_DAY),
@@ -40,5 +42,10 @@ public enum Days {
         return dayType;
     }
     
+    public static String[] labels(){
+        String[] res = {MONDAY.label, TUESDAY.label, WEDNESDAY.label, THURSDAY.label, FRIDAY.label,
+                SATURDAY.label, SUNDAY.label, PUBLIC_HOLIDAY.label};       
+        return res;
+    }
     
 }
