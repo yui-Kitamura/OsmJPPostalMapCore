@@ -9,7 +9,6 @@ import pro.eng.yui.oss.osm.lib.jppostalcore.api.osm.CreateXML;
 import pro.eng.yui.oss.osm.lib.jppostalcore.api.osm.OsmApi;
 import pro.eng.yui.oss.osm.lib.jppostalcore.api.overpass.OverpassApi;
 import pro.eng.yui.oss.osm.lib.jppostalcore.api.overpass.OverpassResponse;
-import pro.eng.yui.oss.osm.lib.jppostalcore.parser.CollectionTimeParser;
 import pro.eng.yui.oss.osm.lib.jppostalcore.parser.OpeningHoursParser;
 import pro.eng.yui.oss.osm.lib.jppostalcore.types.*;
 import retrofit2.Response;
