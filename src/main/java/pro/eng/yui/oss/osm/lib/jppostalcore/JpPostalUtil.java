@@ -9,6 +9,7 @@ import pro.eng.yui.oss.osm.lib.jppostalcore.api.osm.CreateXML;
 import pro.eng.yui.oss.osm.lib.jppostalcore.api.osm.OsmApi;
 import pro.eng.yui.oss.osm.lib.jppostalcore.api.overpass.OverpassApi;
 import pro.eng.yui.oss.osm.lib.jppostalcore.api.overpass.OverpassResponse;
+import pro.eng.yui.oss.osm.lib.jppostalcore.parser.CollectionTimeParser;
 import pro.eng.yui.oss.osm.lib.jppostalcore.parser.OpeningHoursParser;
 import pro.eng.yui.oss.osm.lib.jppostalcore.types.*;
 import retrofit2.Response;
@@ -295,12 +296,21 @@ public class JpPostalUtil {
     }
 
     /* opening_hours, collection_times 処理 */
-    public static Map<Days, OpeningHoursParser.DaySchedule> decode(OpeningHours tagValue){
+    public static Map<Days, OpeningHoursParser.DaySchedule> decodeOpeningHours(OpeningHours tagValue){
         OpeningHoursParser parser = new OpeningHoursParser();
         return parser.decode(tagValue);
     }
-    public static OpeningHours encode(Map<Days, OpeningHoursParser.DaySchedule> data){
+    public static OpeningHours encodeOpeningHours(Map<Days, OpeningHoursParser.DaySchedule> data){
         OpeningHoursParser parser = new OpeningHoursParser();
+        return parser.encode(data);
+    }
+
+    public static Map<Days, CollectionTimeParser.DaySchedule> decodeCollectionTimes(CollectionTimes tagValue){
+        CollectionTimeParser parser = new CollectionTimeParser();
+        return parser.decode(tagValue);
+    }
+    public static CollectionTimes encodeCollectionTimes(Map<Days, CollectionTimeParser.DaySchedule> data){
+        CollectionTimeParser parser = new CollectionTimeParser();
         return parser.encode(data);
     }
     

@@ -115,7 +115,7 @@ public class CollectionTimeParser implements IParser<CollectionTimeParser.DaySch
     }
 
     @Override
-    public TextValue encode(Map<Days, CollectionTimeParser.DaySchedule> schedule) {
+    public CollectionTimes encode(Map<Days, CollectionTimeParser.DaySchedule> schedule) {
         Map<Days, String> wip = new HashMap<>();
         for (Days d : schedule.keySet()) {
             List<CollectionTime> schedulesInDay = schedule.get(d).schedule;
