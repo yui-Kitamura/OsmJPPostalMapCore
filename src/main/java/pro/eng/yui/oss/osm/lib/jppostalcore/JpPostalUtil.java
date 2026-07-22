@@ -2,6 +2,8 @@ package pro.eng.yui.oss.osm.lib.jppostalcore;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.ResponseBody;
+import pro.eng.yui.oss.osm.lib.jppostalcore.api.datasource.DataSourceApi;
 import pro.eng.yui.oss.osm.lib.jppostalcore.api.osm.ChangeSetInfo;
 import pro.eng.yui.oss.osm.lib.jppostalcore.api.osm.CreateXML;
 import pro.eng.yui.oss.osm.lib.jppostalcore.api.osm.OsmApi;
@@ -22,9 +24,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
@@ -105,6 +104,13 @@ public class JpPostalUtil {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         osmApi = osmRetrofit.create(OsmApi.class);
+        /* DataSourceReference */
+        Retrofit dataRetrofit = new Retrofit.Builder()
+                .baseUrl("https://yui-kitamura.github.io/OsmJpPostalMapDataSource/")
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        dataSourceApi = dataRetrofit.create(DataSourceApi.class);
     }
     
     private JpPostalUtil(){ /* this is a util class */ }
@@ -237,21 +243,18 @@ public class JpPostalUtil {
     }
     
     /* JpPostalDatasource処理 */
+    private static final DataSourceApi dataSourceApi;
     /** 都道府県リスト
      * @return 県名,コード のMap */
     public static Map<String, Integer> getPrefectures() {
         Map<String, Integer> prefectures = new HashMap<>();
+        try{    
+            Response<ResponseBody> res = dataSourceApi.masterPrefJson().execute();
+            if (res.isSuccessful() == false) { throw new IOException(res.message()); }
 
-        try (HttpClient client = HttpClient.newBuilder().build()){
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("https://yui-kitamura.github.io/OsmJpPostalMapDataSource/data/master/pref.json"))
-                    .GET()
-                    .build();
-
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
+            String jsonString = res.body().string();
             Gson gson = new Gson();
-            JsonArray jsonArray = gson.fromJson(response.body(), JsonArray.class);
+            JsonArray jsonArray = gson.fromJson(jsonString, JsonArray.class);
 
             for (int i = 0; i < jsonArray.size(); i++) {
                 JsonObject obj = jsonArray.get(i).getAsJsonObject();
@@ -259,7 +262,7 @@ public class JpPostalUtil {
                 int code = Integer.parseInt(obj.get("code").getAsString());
                 prefectures.put(name, code);
             }
-        }catch (IOException | InterruptedException ignore) { }
+        } catch (IOException ignore) { }
         return prefectures;
     }
     /** 都道府県名からコードを返します */
@@ -272,24 +275,20 @@ public class JpPostalUtil {
         if (prefCode < 0){ throw new IllegalArgumentException("都道府県名不正"); }
         List<OsmPoi> prefectureDataList = new ArrayList<>();
 
-        try (HttpClient client = HttpClient.newBuilder().build()){
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("https://yui-kitamura.github.io/OsmJpPostalMapDataSource/data/jPostal_"
-                            + String.format("%02d",prefCode) + ".json"))
-                    .GET()
-                    .build();
+        try{
+            Response<ResponseBody> res = dataSourceApi.masterPrefJson().execute();
+            if (res.isSuccessful() == false) { throw new IOException(res.message()); }
 
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
+            String jsonString = res.body().string();
             Gson gson = new Gson();
-            JsonObject prefDataObj = gson.fromJson(response.body(), JsonObject.class);
+            JsonObject prefDataObj = gson.fromJson(jsonString, JsonObject.class);
             JsonArray jsonArray = prefDataObj.get("data").getAsJsonArray();
 
             for (int i = 0; i < jsonArray.size(); i++) {
                 JsonObject obj = jsonArray.get(i).getAsJsonObject();
                 prefectureDataList.add(new OsmPoi(obj));
             }
-        }catch (IOException | InterruptedException ignore) { }
+        }catch (IOException ignore) { }
         return prefectureDataList;
     }
 
