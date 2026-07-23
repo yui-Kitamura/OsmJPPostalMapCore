@@ -1,6 +1,6 @@
 package pro.eng.yui.oss.osm.lib.jppostalcore.types;
 
-public class OpenCloseTime {
+public class OpenCloseTime implements ITagPart{
     public final TimeStr openAt;
     public final TimeStr closeAt;
     

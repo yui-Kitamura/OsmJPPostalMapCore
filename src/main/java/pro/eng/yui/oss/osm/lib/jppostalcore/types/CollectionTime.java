@@ -1,6 +1,6 @@
 package pro.eng.yui.oss.osm.lib.jppostalcore.types;
 
-public class CollectionTime {
+public class CollectionTime implements ITagPart {
 
     public final TimeStr collectAt;
 
