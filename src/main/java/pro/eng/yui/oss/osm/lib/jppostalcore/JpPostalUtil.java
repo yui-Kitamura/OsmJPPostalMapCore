@@ -40,7 +40,7 @@ public class JpPostalUtil {
 
     private static final ZoneId JST = ZoneId.of("Asia/Tokyo");
     private static final Set<LocalDate> HOLIDAYS = new HashSet<>();
-    private static Properties buildInfo = new Properties();
+    private static final Properties buildInfo = new Properties();
 
     /* initialize */
     static {
