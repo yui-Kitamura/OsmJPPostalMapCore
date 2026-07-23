@@ -1,11 +1,16 @@
 package pro.eng.yui.oss.osm.lib.jppostalcore.types;
 
+import java.time.LocalTime;
+
 public class TimeStr {
     public final String value;
+    public final int totalMinute;
 
     public TimeStr(String timeStr) {
         if (validate(timeStr) == false){ throw new IllegalArgumentException("invalid time format"); }
         this.value = timeStr;
+        String[] split = value.split(":");
+        this.totalMinute = Integer.parseInt(split[0])*60 + Integer.parseInt(split[1]);
     }
     
     public static boolean validate(String input){
@@ -13,6 +18,12 @@ public class TimeStr {
             return false;
         }
         return true;
+    }
+
+    public LocalTime getTime(){
+        String[] split = value.split(":");
+        int hour = Integer.parseInt(split[0])%24;
+        return LocalTime.of(hour,Integer.parseInt(split[1]));
     }
     
     @Override
