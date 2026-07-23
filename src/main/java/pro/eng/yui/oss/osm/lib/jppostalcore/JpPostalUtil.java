@@ -132,6 +132,8 @@ public class JpPostalUtil {
     public static boolean isHoliday(LocalDate date){
         return HOLIDAYS.contains(date);
     }
+
+    /** 今日の曜日を返します。ただし、祝日の場合はPHです */
     public static Days getDays() {
         return getDays(LocalDate.now(JST));
     }

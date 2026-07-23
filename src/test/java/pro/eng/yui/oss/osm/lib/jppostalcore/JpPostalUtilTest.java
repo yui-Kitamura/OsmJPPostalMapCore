@@ -4,6 +4,7 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import pro.eng.yui.oss.osm.lib.jppostalcore.types.Days;
 import pro.eng.yui.oss.osm.lib.jppostalcore.types.OsmPoi;
 
 import java.time.LocalDate;
@@ -30,6 +31,18 @@ class JpPostalUtilTest {
     void isHolidayNoSupportForLastYear(){
         LocalDate date = LocalDate.of(LocalDate.now().getYear()-1, 1,1);
         assertFalse(JpPostalUtil.isHoliday(date));
+    }
+    
+    /* 曜日取得 */
+    @Test
+    void getDaysPH(){
+        LocalDate date = LocalDate.of(LocalDate.now().getYear(), 1,1);
+        assertEquals(Days.PUBLIC_HOLIDAY, JpPostalUtil.getDays(date));
+    }
+    @Test
+    void getDaysMon(){
+        LocalDate date = LocalDate.of(2026, 7,13);
+        assertEquals(Days.MONDAY, JpPostalUtil.getDays(date));
     }
     
     /* OverpassAPIコール */
