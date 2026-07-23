@@ -4,7 +4,7 @@ import pro.eng.yui.oss.osm.lib.jppostalcore.types.*;
 
 import java.util.*;
 
-public class CollectionTimeParser implements IParser<CollectionTimeParser.DaySchedule> {
+public class CollectionTimeParser extends AbstParser<CollectionTimeParser.DaySchedule> {
     public CollectionTimeParser(){}
 
     public enum DayStatus{

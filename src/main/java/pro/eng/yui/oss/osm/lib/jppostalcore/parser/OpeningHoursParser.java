@@ -7,7 +7,7 @@ import pro.eng.yui.oss.osm.lib.jppostalcore.types.TextValue;
 
 import java.util.*;
 
-public class OpeningHoursParser implements IParser<OpeningHoursParser.DaySchedule> {
+public class OpeningHoursParser extends AbstParser<OpeningHoursParser.DaySchedule> {
     
     public OpeningHoursParser(){}
     
