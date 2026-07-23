@@ -123,7 +123,7 @@ public class JpPostalUtil {
      * @return 今日が日本の祝日の場合<code>true</code>, 祝日ではない場合<code>false</code>
      * */
     public static boolean isHoliday(){
-        return isHoliday(LocalDate.now());
+        return isHoliday(LocalDate.now(JST));
     }
     /** 指定日付が日本の祝日であるかを返します
      * @param date 今年以後の指定日
@@ -131,6 +131,17 @@ public class JpPostalUtil {
      * */
     public static boolean isHoliday(LocalDate date){
         return HOLIDAYS.contains(date);
+    }
+    public static Days getDays() {
+        return getDays(LocalDate.now(JST));
+    }
+    public static Days getDays(LocalDate date){
+        if (isHoliday(date)) {
+            return Days.PUBLIC_HOLIDAY;
+        }
+        int day = date.getDayOfWeek().getValue(); //1:Mo - 7:Su
+        Days[] days = Days.values();
+        return days[day-1];
     }
     
     /* OverpassAPIコール */
