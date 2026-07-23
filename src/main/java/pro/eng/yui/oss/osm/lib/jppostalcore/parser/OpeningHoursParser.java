@@ -23,8 +23,9 @@ public class OpeningHoursParser extends AbstParser<OpeningHoursParser.DaySchedul
     }
     
     public static class DaySchedule {
-        DayStatus status;
-        List<OpenCloseTime> schedule;
+        public final DayStatus status;
+        public final List<OpenCloseTime> schedule;
+        
         public DaySchedule(){
             status = OpeningHoursParser.DayStatus.UNKNOWN;
             schedule = new ArrayList<>();

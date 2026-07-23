@@ -17,8 +17,8 @@ public class CollectionTimeParser extends AbstParser<CollectionTimeParser.DaySch
     }
     
     public static class DaySchedule {
-        CollectionTimeParser.DayStatus status;
-        List<CollectionTime> schedule;
+        public final CollectionTimeParser.DayStatus status;
+        public final List<CollectionTime> schedule;
         public DaySchedule(){
             status = CollectionTimeParser.DayStatus.UNKNOWN;
             schedule = new ArrayList<>();
