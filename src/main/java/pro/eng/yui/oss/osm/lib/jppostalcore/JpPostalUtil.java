@@ -37,8 +37,9 @@ import java.util.concurrent.TimeUnit;
  * @author yuiKITAMURA
  * */
 public class JpPostalUtil {
+    /** 共通タイムゾーン 日本標準時 */
+    public static final ZoneId JST = ZoneId.of("Asia/Tokyo");
 
-    private static final ZoneId JST = ZoneId.of("Asia/Tokyo");
     private static final Set<LocalDate> HOLIDAYS = new HashSet<>();
     private static final Properties buildInfo = new Properties();
 
