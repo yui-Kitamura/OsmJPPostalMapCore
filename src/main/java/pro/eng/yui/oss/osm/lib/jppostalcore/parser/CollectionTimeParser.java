@@ -101,13 +101,13 @@ public class CollectionTimeParser extends AbstParser<CollectionTimeParser.DaySch
         String[] parts = part.split(" ", 2);
         if (parts.length < 2){ throw new IllegalArgumentException(part); }
         if (day.label.equals(parts[0])) {
-            if (parts[1].equals("off")) {
+            if (parts[1].trim().equals("off")) {
                 return new CollectionTimeParser.DaySchedule(CollectionTimeParser.DayStatus.CLOSED_DAY, new ArrayList<>());
             }
             List<CollectionTime> openHours = new ArrayList<>();
             String[] hourParts = parts[1].split(",");
             for (int i=0; i<hourParts.length; i++) {
-                openHours.add(new CollectionTime(hourParts[i]));
+                openHours.add(new CollectionTime(hourParts[i].trim()));
             }
             return new CollectionTimeParser.DaySchedule(CollectionTimeParser.DayStatus.OPEN_DAY, openHours);
         }else {
