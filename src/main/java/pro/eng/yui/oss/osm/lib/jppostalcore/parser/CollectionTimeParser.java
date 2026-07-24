@@ -1,5 +1,6 @@
 package pro.eng.yui.oss.osm.lib.jppostalcore.parser;
 
+import org.jetbrains.annotations.NotNull;
 import pro.eng.yui.oss.osm.lib.jppostalcore.types.*;
 
 import java.util.*;
@@ -18,12 +19,13 @@ public class CollectionTimeParser extends AbstParser<CollectionTimeParser.DaySch
     
     public static class DaySchedule {
         public final CollectionTimeParser.DayStatus status;
+        @NotNull
         public final List<CollectionTime> schedule;
         public DaySchedule(){
             status = CollectionTimeParser.DayStatus.UNKNOWN;
             schedule = new ArrayList<>();
         }
-        public DaySchedule(CollectionTimeParser.DayStatus status, List<CollectionTime> schedule){
+        public DaySchedule(CollectionTimeParser.DayStatus status, @NotNull List<CollectionTime> schedule){
             this.status = status;
             this.schedule = schedule;
         }
