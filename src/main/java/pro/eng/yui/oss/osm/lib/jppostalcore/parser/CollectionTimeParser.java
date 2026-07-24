@@ -60,7 +60,17 @@ public class CollectionTimeParser extends AbstParser<CollectionTimeParser.DaySch
 
             // partの曜日 Mo-Fr を Mo,Tu,We,Th,Fr のように展開して再代入
             // We-Mo のような週跨ぎに留意
-            String[] subParts = part.split(" ", 2);
+            String[] spaced = part.split(" ");
+            String days = "", hours = "";
+            for (String s : spaced) {
+                try {
+                    Days.getFromLabel(s.substring(0,2));
+                    days += s;
+                }catch (IllegalArgumentException e) {
+                    hours += s;
+                }
+            }
+            String[] subParts = new String[]{days, hours};
             String daysPart = subParts[0];
             String timesPart = subParts.length > 1 ? subParts[1] : "";
 

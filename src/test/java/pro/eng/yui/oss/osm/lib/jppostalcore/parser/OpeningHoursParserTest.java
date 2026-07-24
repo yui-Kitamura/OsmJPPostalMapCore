@@ -134,6 +134,27 @@ class OpeningHoursParserTest {
         assertEquals(new OpenCloseTime("9:00","12:00"), result.get(Days.WEDNESDAY).schedule().get(0));
         assertEquals(new OpenCloseTime("9:00","17:00"), result.get(Days.FRIDAY).schedule().get(0));
     }
+    @Test
+    void decodeWithSpaceInDays(){
+        OpeningHours input = new OpeningHours("Mo, Th-Fr 9:00-17:00");
+        OpeningHoursParser parser = new OpeningHoursParser();
+        Map<Days, OpeningHoursParser.DaySchedule> result = parser.decode(input);
+        assertEquals(new OpenCloseTime("9:00","17:00"), result.get(Days.MONDAY).schedule().get(0));
+        assertEquals(new OpenCloseTime("9:00","17:00"), result.get(Days.THURSDAY).schedule().get(0));
+        assertEquals(new OpenCloseTime("9:00","17:00"), result.get(Days.FRIDAY).schedule().get(0));
+    }
+    @Test
+    void decodeWithSpaceInDaysAndRest(){
+        OpeningHours input = new OpeningHours("Mo, Th-Fr 9:00-11:00, 13:00-17:00");
+        OpeningHoursParser parser = new OpeningHoursParser();
+        Map<Days, OpeningHoursParser.DaySchedule> result = parser.decode(input);
+        assertEquals(new OpenCloseTime("9:00","11:00"), result.get(Days.MONDAY).schedule().get(0));
+        assertEquals(new OpenCloseTime("9:00","11:00"), result.get(Days.THURSDAY).schedule().get(0));
+        assertEquals(new OpenCloseTime("9:00","11:00"), result.get(Days.FRIDAY).schedule().get(0));
+        assertEquals(new OpenCloseTime("13:00","17:00"), result.get(Days.MONDAY).schedule().get(1));
+        assertEquals(new OpenCloseTime("13:00","17:00"), result.get(Days.THURSDAY).schedule().get(1));
+        assertEquals(new OpenCloseTime("13:00","17:00"), result.get(Days.FRIDAY).schedule().get(1));
+    }
 
     @Test
     void decode24_7(){
