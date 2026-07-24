@@ -15,6 +15,11 @@ public class OpenCloseTime implements ITagPart{
     }
 
     @Override
+    public String toString() {
+        return toPairStr();
+    }
+
+    @Override
     public boolean equals(Object obj) {
         if (obj == null || getClass() != obj.getClass()) {
             return false;
