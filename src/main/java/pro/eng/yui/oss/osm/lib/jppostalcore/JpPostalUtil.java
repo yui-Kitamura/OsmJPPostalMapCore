@@ -157,7 +157,8 @@ public class JpPostalUtil {
     public static List<OsmPoi> callOverpass(String queryBody, int maxRetry, int interval) throws IOException,IllegalStateException {
         for (int tryCount = 0; tryCount<maxRetry; tryCount++) {
             try {
-                return callOverpass(queryBody);
+                int timeout = 60 + tryCount*15; //try毎にクエリタイムアウトを増加させる
+                return callOverpass(queryBody, timeout);
             }catch (IllegalStateException|IOException e) {
                 try {
                     TimeUnit.SECONDS.sleep(interval);
