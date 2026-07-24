@@ -1,10 +1,7 @@
 package pro.eng.yui.oss.osm.lib.jppostalcore.parser;
 
 import org.jetbrains.annotations.NotNull;
-import pro.eng.yui.oss.osm.lib.jppostalcore.types.Days;
-import pro.eng.yui.oss.osm.lib.jppostalcore.types.OpenCloseTime;
-import pro.eng.yui.oss.osm.lib.jppostalcore.types.OpeningHours;
-import pro.eng.yui.oss.osm.lib.jppostalcore.types.TextValue;
+import pro.eng.yui.oss.osm.lib.jppostalcore.types.*;
 
 import java.util.*;
 
@@ -12,7 +9,7 @@ public class OpeningHoursParser extends AbstParser<OpeningHoursParser.DaySchedul
     
     public OpeningHoursParser(){}
     
-    public enum DayStatus{
+    public enum DayStatus implements IDayStatus {
         /** 24時間営業 */
         OPEN24,
         /** 営業時間あり */
@@ -23,10 +20,13 @@ public class OpeningHoursParser extends AbstParser<OpeningHoursParser.DaySchedul
         UNKNOWN;
     }
     
-    public static class DaySchedule {
-        public final DayStatus status;
+    public static class DaySchedule implements IDaySchedule {
+        private final DayStatus status;
+        public DayStatus status(){ return status; }
+        private final List<OpenCloseTime> schedule;
+        @Override
         @NotNull
-        public final List<OpenCloseTime> schedule;
+        public List<OpenCloseTime> schedule(){ return schedule; }
         
         public DaySchedule(){
             status = OpeningHoursParser.DayStatus.UNKNOWN;

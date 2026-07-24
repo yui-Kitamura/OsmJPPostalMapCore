@@ -8,7 +8,7 @@ import java.util.*;
 public class CollectionTimeParser extends AbstParser<CollectionTimeParser.DaySchedule> {
     public CollectionTimeParser(){}
 
-    public enum DayStatus{
+    public enum DayStatus implements IDayStatus{
         /** 営業時間あり */
         OPEN_DAY,
         /** 休業日 */
@@ -17,9 +17,8 @@ public class CollectionTimeParser extends AbstParser<CollectionTimeParser.DaySch
         UNKNOWN;
     }
     
-    public static class DaySchedule {
+    public static class DaySchedule implements IDaySchedule{
         public final CollectionTimeParser.DayStatus status;
-        @NotNull
         public final List<CollectionTime> schedule;
         public DaySchedule(){
             status = CollectionTimeParser.DayStatus.UNKNOWN;
