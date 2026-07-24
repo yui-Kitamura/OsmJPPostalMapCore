@@ -18,8 +18,13 @@ public class CollectionTimeParser extends AbstParser<CollectionTimeParser.DaySch
     }
     
     public static class DaySchedule implements IDaySchedule{
-        public final CollectionTimeParser.DayStatus status;
-        public final List<CollectionTime> schedule;
+        private final CollectionTimeParser.DayStatus status;
+        public CollectionTimeParser.DayStatus status(){ return status; }
+        private final List<CollectionTime> schedule;
+        @Override
+        @NotNull
+        public List<CollectionTime> schedule(){ return schedule; }
+        
         public DaySchedule(){
             status = CollectionTimeParser.DayStatus.UNKNOWN;
             schedule = new ArrayList<>();
