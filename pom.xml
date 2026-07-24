@@ -6,7 +6,7 @@
 
     <groupId>pro.eng.yui.oss.osm.lib</groupId>
     <artifactId>jppostalcore</artifactId>
-    <version>0.4.4</version>
+    <version>0.4.5</version>
     <packaging>jar</packaging>
 
     <name>OsmJPPostalMapCore</name>
