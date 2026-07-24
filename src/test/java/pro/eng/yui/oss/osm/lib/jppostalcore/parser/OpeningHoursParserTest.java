@@ -19,22 +19,22 @@ class OpeningHoursParserTest {
         Map<Days, OpeningHoursParser.DaySchedule> result = parser.decode(input);
         
         assertEquals(8, result.size());
-        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.MONDAY).status);
-        assertEquals(new OpenCloseTime("10:00","17:00"), result.get(Days.MONDAY).schedule.get(0));
-        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.TUESDAY).status);
-        assertEquals(new OpenCloseTime("10:00","17:00"), result.get(Days.TUESDAY).schedule.get(0));
-        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.WEDNESDAY).status);
-        assertEquals(new OpenCloseTime("10:00","17:00"), result.get(Days.WEDNESDAY).schedule.get(0));
-        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.THURSDAY).status);
-        assertEquals(new OpenCloseTime("10:00","17:00"), result.get(Days.THURSDAY).schedule.get(0));
-        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.FRIDAY).status);
-        assertEquals(new OpenCloseTime("10:00","17:00"), result.get(Days.FRIDAY).schedule.get(0));
-        assertEquals(OpeningHoursParser.DayStatus.CLOSED_DAY, result.get(Days.SATURDAY).status);
-        assertEquals(0, result.get(Days.SATURDAY).schedule.size());
-        assertEquals(OpeningHoursParser.DayStatus.CLOSED_DAY, result.get(Days.SUNDAY).status);
-        assertEquals(0, result.get(Days.SUNDAY).schedule.size());
-        assertEquals(OpeningHoursParser.DayStatus.CLOSED_DAY, result.get(Days.PUBLIC_HOLIDAY).status);
-        assertEquals(0, result.get(Days.PUBLIC_HOLIDAY).schedule.size());
+        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.MONDAY).status());
+        assertEquals(new OpenCloseTime("10:00","17:00"), result.get(Days.MONDAY).schedule().get(0));
+        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.TUESDAY).status());
+        assertEquals(new OpenCloseTime("10:00","17:00"), result.get(Days.TUESDAY).schedule().get(0));
+        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.WEDNESDAY).status());
+        assertEquals(new OpenCloseTime("10:00","17:00"), result.get(Days.WEDNESDAY).schedule().get(0));
+        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.THURSDAY).status());
+        assertEquals(new OpenCloseTime("10:00","17:00"), result.get(Days.THURSDAY).schedule().get(0));
+        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.FRIDAY).status());
+        assertEquals(new OpenCloseTime("10:00","17:00"), result.get(Days.FRIDAY).schedule().get(0));
+        assertEquals(OpeningHoursParser.DayStatus.CLOSED_DAY, result.get(Days.SATURDAY).status());
+        assertEquals(0, result.get(Days.SATURDAY).schedule().size());
+        assertEquals(OpeningHoursParser.DayStatus.CLOSED_DAY, result.get(Days.SUNDAY).status());
+        assertEquals(0, result.get(Days.SUNDAY).schedule().size());
+        assertEquals(OpeningHoursParser.DayStatus.CLOSED_DAY, result.get(Days.PUBLIC_HOLIDAY).status());
+        assertEquals(0, result.get(Days.PUBLIC_HOLIDAY).schedule().size());
     }
 
     @Test
@@ -45,22 +45,22 @@ class OpeningHoursParserTest {
         Map<Days, OpeningHoursParser.DaySchedule> result = parser.decode(input);
 
         assertEquals(8, result.size());
-        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.MONDAY).status);
-        assertEquals(new OpenCloseTime("10:00","17:00"), result.get(Days.MONDAY).schedule.get(0));
-        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.TUESDAY).status);
-        assertEquals(new OpenCloseTime("10:00","17:00"), result.get(Days.TUESDAY).schedule.get(0));
-        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.WEDNESDAY).status);
-        assertEquals(new OpenCloseTime("10:00","17:00"), result.get(Days.WEDNESDAY).schedule.get(0));
-        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.THURSDAY).status);
-        assertEquals(new OpenCloseTime("10:00","17:00"), result.get(Days.THURSDAY).schedule.get(0));
-        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.FRIDAY).status);
-        assertEquals(new OpenCloseTime("10:00","17:00"), result.get(Days.FRIDAY).schedule.get(0));
-        assertEquals(OpeningHoursParser.DayStatus.CLOSED_DAY, result.get(Days.SATURDAY).status);
-        assertEquals(0, result.get(Days.SATURDAY).schedule.size());
-        assertEquals(OpeningHoursParser.DayStatus.CLOSED_DAY, result.get(Days.SUNDAY).status);
-        assertEquals(0, result.get(Days.SUNDAY).schedule.size());
-        assertEquals(OpeningHoursParser.DayStatus.CLOSED_DAY, result.get(Days.PUBLIC_HOLIDAY).status);
-        assertEquals(0, result.get(Days.PUBLIC_HOLIDAY).schedule.size());
+        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.MONDAY).status());
+        assertEquals(new OpenCloseTime("10:00", "17:00"), result.get(Days.MONDAY).schedule().get(0));
+        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.TUESDAY).status());
+        assertEquals(new OpenCloseTime("10:00", "17:00"), result.get(Days.TUESDAY).schedule().get(0));
+        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.WEDNESDAY).status());
+        assertEquals(new OpenCloseTime("10:00", "17:00"), result.get(Days.WEDNESDAY).schedule().get(0));
+        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.THURSDAY).status());
+        assertEquals(new OpenCloseTime("10:00", "17:00"), result.get(Days.THURSDAY).schedule().get(0));
+        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.FRIDAY).status());
+        assertEquals(new OpenCloseTime("10:00", "17:00"), result.get(Days.FRIDAY).schedule().get(0));
+        assertEquals(OpeningHoursParser.DayStatus.CLOSED_DAY, result.get(Days.SATURDAY).status());
+        assertEquals(0, result.get(Days.SATURDAY).schedule().size());
+        assertEquals(OpeningHoursParser.DayStatus.CLOSED_DAY, result.get(Days.SUNDAY).status());
+        assertEquals(0, result.get(Days.SUNDAY).schedule().size());
+        assertEquals(OpeningHoursParser.DayStatus.CLOSED_DAY, result.get(Days.PUBLIC_HOLIDAY).status());
+        assertEquals(0, result.get(Days.PUBLIC_HOLIDAY).schedule().size());
     }
 
     @Test
@@ -71,27 +71,27 @@ class OpeningHoursParserTest {
         Map<Days, OpeningHoursParser.DaySchedule> result = parser.decode(input);
 
         assertEquals(8, result.size());
-        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.MONDAY).status);
-        assertEquals(new OpenCloseTime("10:00","12:00"), result.get(Days.MONDAY).schedule.get(0));
-        assertEquals(new OpenCloseTime("13:30","17:00"), result.get(Days.MONDAY).schedule.get(1));
-        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.TUESDAY).status);
-        assertEquals(new OpenCloseTime("10:00","12:00"), result.get(Days.TUESDAY).schedule.get(0));
-        assertEquals(new OpenCloseTime("13:30","17:00"), result.get(Days.TUESDAY).schedule.get(1));
-        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.WEDNESDAY).status);
-        assertEquals(new OpenCloseTime("10:00","12:00"), result.get(Days.WEDNESDAY).schedule.get(0));
-        assertEquals(new OpenCloseTime("13:30","17:00"), result.get(Days.WEDNESDAY).schedule.get(1));
-        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.THURSDAY).status);
-        assertEquals(new OpenCloseTime("10:00","12:00"), result.get(Days.THURSDAY).schedule.get(0));
-        assertEquals(new OpenCloseTime("13:30","17:00"), result.get(Days.THURSDAY).schedule.get(1));
-        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.FRIDAY).status);
-        assertEquals(new OpenCloseTime("10:00","12:00"), result.get(Days.FRIDAY).schedule.get(0));
-        assertEquals(new OpenCloseTime("13:30","17:00"), result.get(Days.FRIDAY).schedule.get(1));
-        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.SATURDAY).status);
-        assertEquals(new OpenCloseTime("10:00","12:00"), result.get(Days.SATURDAY).schedule.get(0));
-        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.SUNDAY).status);
-        assertEquals(new OpenCloseTime("10:00","12:00"), result.get(Days.SUNDAY).schedule.get(0));
-        assertEquals(OpeningHoursParser.DayStatus.CLOSED_DAY, result.get(Days.PUBLIC_HOLIDAY).status);
-        assertEquals(0, result.get(Days.PUBLIC_HOLIDAY).schedule.size());
+        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.MONDAY).status());
+        assertEquals(new OpenCloseTime("10:00","12:00"), result.get(Days.MONDAY).schedule().get(0));
+        assertEquals(new OpenCloseTime("13:30","17:00"), result.get(Days.MONDAY).schedule().get(1));
+        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.TUESDAY).status());
+        assertEquals(new OpenCloseTime("10:00","12:00"), result.get(Days.TUESDAY).schedule().get(0));
+        assertEquals(new OpenCloseTime("13:30","17:00"), result.get(Days.TUESDAY).schedule().get(1));
+        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.WEDNESDAY).status());
+        assertEquals(new OpenCloseTime("10:00","12:00"), result.get(Days.WEDNESDAY).schedule().get(0));
+        assertEquals(new OpenCloseTime("13:30","17:00"), result.get(Days.WEDNESDAY).schedule().get(1));
+        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.THURSDAY).status());
+        assertEquals(new OpenCloseTime("10:00","12:00"), result.get(Days.THURSDAY).schedule().get(0));
+        assertEquals(new OpenCloseTime("13:30","17:00"), result.get(Days.THURSDAY).schedule().get(1));
+        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.FRIDAY).status());
+        assertEquals(new OpenCloseTime("10:00","12:00"), result.get(Days.FRIDAY).schedule().get(0));
+        assertEquals(new OpenCloseTime("13:30","17:00"), result.get(Days.FRIDAY).schedule().get(1));
+        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.SATURDAY).status());
+        assertEquals(new OpenCloseTime("10:00","12:00"), result.get(Days.SATURDAY).schedule().get(0));
+        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.SUNDAY).status());
+        assertEquals(new OpenCloseTime("10:00","12:00"), result.get(Days.SUNDAY).schedule().get(0));
+        assertEquals(OpeningHoursParser.DayStatus.CLOSED_DAY, result.get(Days.PUBLIC_HOLIDAY).status());
+        assertEquals(0, result.get(Days.PUBLIC_HOLIDAY).schedule().size());
     }
 
     @Test
@@ -102,27 +102,27 @@ class OpeningHoursParserTest {
         Map<Days, OpeningHoursParser.DaySchedule> result = parser.decode(input);
 
         assertEquals(8, result.size());
-        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.MONDAY).status);
-        assertEquals(new OpenCloseTime("10:00","12:00"), result.get(Days.MONDAY).schedule.get(0));
-        assertEquals(new OpenCloseTime("13:30","17:00"), result.get(Days.MONDAY).schedule.get(1));
-        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.TUESDAY).status);
-        assertEquals(new OpenCloseTime("10:00","12:00"), result.get(Days.TUESDAY).schedule.get(0));
-        assertEquals(new OpenCloseTime("13:30","17:00"), result.get(Days.TUESDAY).schedule.get(1));
-        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.WEDNESDAY).status);
-        assertEquals(new OpenCloseTime("10:00","12:00"), result.get(Days.WEDNESDAY).schedule.get(0));
-        assertEquals(new OpenCloseTime("13:30","17:00"), result.get(Days.WEDNESDAY).schedule.get(1));
-        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.THURSDAY).status);
-        assertEquals(new OpenCloseTime("10:00","12:00"), result.get(Days.THURSDAY).schedule.get(0));
-        assertEquals(new OpenCloseTime("13:30","17:00"), result.get(Days.THURSDAY).schedule.get(1));
-        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.FRIDAY).status);
-        assertEquals(new OpenCloseTime("10:00","12:00"), result.get(Days.FRIDAY).schedule.get(0));
-        assertEquals(new OpenCloseTime("13:30","17:00"), result.get(Days.FRIDAY).schedule.get(1));
-        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.SATURDAY).status);
-        assertEquals(new OpenCloseTime("10:00","12:00"), result.get(Days.SATURDAY).schedule.get(0));
-        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.SUNDAY).status);
-        assertEquals(new OpenCloseTime("10:00","12:00"), result.get(Days.SUNDAY).schedule.get(0));
-        assertEquals(OpeningHoursParser.DayStatus.CLOSED_DAY, result.get(Days.PUBLIC_HOLIDAY).status);
-        assertEquals(0, result.get(Days.PUBLIC_HOLIDAY).schedule.size());
+        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.MONDAY).status());
+        assertEquals(new OpenCloseTime("10:00", "12:00"), result.get(Days.MONDAY).schedule().get(0));
+        assertEquals(new OpenCloseTime("13:30", "17:00"), result.get(Days.MONDAY).schedule().get(1));
+        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.TUESDAY).status());
+        assertEquals(new OpenCloseTime("10:00", "12:00"), result.get(Days.TUESDAY).schedule().get(0));
+        assertEquals(new OpenCloseTime("13:30", "17:00"), result.get(Days.TUESDAY).schedule().get(1));
+        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.WEDNESDAY).status());
+        assertEquals(new OpenCloseTime("10:00", "12:00"), result.get(Days.WEDNESDAY).schedule().get(0));
+        assertEquals(new OpenCloseTime("13:30", "17:00"), result.get(Days.WEDNESDAY).schedule().get(1));
+        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.THURSDAY).status());
+        assertEquals(new OpenCloseTime("10:00", "12:00"), result.get(Days.THURSDAY).schedule().get(0));
+        assertEquals(new OpenCloseTime("13:30", "17:00"), result.get(Days.THURSDAY).schedule().get(1));
+        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.FRIDAY).status());
+        assertEquals(new OpenCloseTime("10:00", "12:00"), result.get(Days.FRIDAY).schedule().get(0));
+        assertEquals(new OpenCloseTime("13:30", "17:00"), result.get(Days.FRIDAY).schedule().get(1));
+        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.SATURDAY).status());
+        assertEquals(new OpenCloseTime("10:00", "12:00"), result.get(Days.SATURDAY).schedule().get(0));
+        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.SUNDAY).status());
+        assertEquals(new OpenCloseTime("10:00", "12:00"), result.get(Days.SUNDAY).schedule().get(0));
+        assertEquals(OpeningHoursParser.DayStatus.CLOSED_DAY, result.get(Days.PUBLIC_HOLIDAY).status());
+        assertEquals(0, result.get(Days.PUBLIC_HOLIDAY).schedule().size());
     }
 
     @Test
@@ -133,22 +133,22 @@ class OpeningHoursParserTest {
         Map<Days, OpeningHoursParser.DaySchedule> result = parser.decode(input);
 
         assertEquals(8, result.size());
-        assertEquals(OpeningHoursParser.DayStatus.OPEN24, result.get(Days.MONDAY).status);
-        assertEquals(new OpenCloseTime("0:00","24:00"), result.get(Days.MONDAY).schedule.get(0));
-        assertEquals(OpeningHoursParser.DayStatus.OPEN24, result.get(Days.TUESDAY).status);
-        assertEquals(new OpenCloseTime("0:00","24:00"), result.get(Days.TUESDAY).schedule.get(0));
-        assertEquals(OpeningHoursParser.DayStatus.OPEN24, result.get(Days.WEDNESDAY).status);
-        assertEquals(new OpenCloseTime("0:00","24:00"), result.get(Days.WEDNESDAY).schedule.get(0));
-        assertEquals(OpeningHoursParser.DayStatus.OPEN24, result.get(Days.THURSDAY).status);
-        assertEquals(new OpenCloseTime("0:00","24:00"), result.get(Days.THURSDAY).schedule.get(0));
-        assertEquals(OpeningHoursParser.DayStatus.OPEN24, result.get(Days.FRIDAY).status);
-        assertEquals(new OpenCloseTime("0:00","24:00"), result.get(Days.FRIDAY).schedule.get(0));
-        assertEquals(OpeningHoursParser.DayStatus.OPEN24, result.get(Days.SATURDAY).status);
-        assertEquals(new OpenCloseTime("0:00","24:00"), result.get(Days.SATURDAY).schedule.get(0));
-        assertEquals(OpeningHoursParser.DayStatus.OPEN24, result.get(Days.SUNDAY).status);
-        assertEquals(new OpenCloseTime("0:00","24:00"), result.get(Days.SUNDAY).schedule.get(0));
-        assertEquals(OpeningHoursParser.DayStatus.OPEN24, result.get(Days.PUBLIC_HOLIDAY).status);
-        assertEquals(new OpenCloseTime("0:00","24:00"), result.get(Days.PUBLIC_HOLIDAY).schedule.get(0));
+        assertEquals(OpeningHoursParser.DayStatus.OPEN24, result.get(Days.MONDAY).status());
+        assertEquals(new OpenCloseTime("0:00", "24:00"), result.get(Days.MONDAY).schedule().get(0));
+        assertEquals(OpeningHoursParser.DayStatus.OPEN24, result.get(Days.TUESDAY).status());
+        assertEquals(new OpenCloseTime("0:00", "24:00"), result.get(Days.TUESDAY).schedule().get(0));
+        assertEquals(OpeningHoursParser.DayStatus.OPEN24, result.get(Days.WEDNESDAY).status());
+        assertEquals(new OpenCloseTime("0:00", "24:00"), result.get(Days.WEDNESDAY).schedule().get(0));
+        assertEquals(OpeningHoursParser.DayStatus.OPEN24, result.get(Days.THURSDAY).status());
+        assertEquals(new OpenCloseTime("0:00", "24:00"), result.get(Days.THURSDAY).schedule().get(0));
+        assertEquals(OpeningHoursParser.DayStatus.OPEN24, result.get(Days.FRIDAY).status());
+        assertEquals(new OpenCloseTime("0:00", "24:00"), result.get(Days.FRIDAY).schedule().get(0));
+        assertEquals(OpeningHoursParser.DayStatus.OPEN24, result.get(Days.SATURDAY).status());
+        assertEquals(new OpenCloseTime("0:00", "24:00"), result.get(Days.SATURDAY).schedule().get(0));
+        assertEquals(OpeningHoursParser.DayStatus.OPEN24, result.get(Days.SUNDAY).status());
+        assertEquals(new OpenCloseTime("0:00", "24:00"), result.get(Days.SUNDAY).schedule().get(0));
+        assertEquals(OpeningHoursParser.DayStatus.OPEN24, result.get(Days.PUBLIC_HOLIDAY).status());
+        assertEquals(new OpenCloseTime("0:00", "24:00"), result.get(Days.PUBLIC_HOLIDAY).schedule().get(0));
     }
 
     @Test
@@ -159,22 +159,22 @@ class OpeningHoursParserTest {
         Map<Days, OpeningHoursParser.DaySchedule> result = parser.decode(input);
 
         assertEquals(8, result.size());
-        assertEquals(OpeningHoursParser.DayStatus.OPEN24, result.get(Days.MONDAY).status);
-        assertEquals(new OpenCloseTime("0:00","24:00"), result.get(Days.MONDAY).schedule.get(0));
-        assertEquals(OpeningHoursParser.DayStatus.OPEN24, result.get(Days.TUESDAY).status);
-        assertEquals(new OpenCloseTime("0:00","24:00"), result.get(Days.TUESDAY).schedule.get(0));
-        assertEquals(OpeningHoursParser.DayStatus.OPEN24, result.get(Days.WEDNESDAY).status);
-        assertEquals(new OpenCloseTime("0:00","24:00"), result.get(Days.WEDNESDAY).schedule.get(0));
-        assertEquals(OpeningHoursParser.DayStatus.OPEN24, result.get(Days.THURSDAY).status);
-        assertEquals(new OpenCloseTime("0:00","24:00"), result.get(Days.THURSDAY).schedule.get(0));
-        assertEquals(OpeningHoursParser.DayStatus.OPEN24, result.get(Days.FRIDAY).status);
-        assertEquals(new OpenCloseTime("0:00","24:00"), result.get(Days.FRIDAY).schedule.get(0));
-        assertEquals(OpeningHoursParser.DayStatus.OPEN24, result.get(Days.SATURDAY).status);
-        assertEquals(new OpenCloseTime("0:00","24:00"), result.get(Days.SATURDAY).schedule.get(0));
-        assertEquals(OpeningHoursParser.DayStatus.OPEN24, result.get(Days.SUNDAY).status);
-        assertEquals(new OpenCloseTime("0:00","24:00"), result.get(Days.SUNDAY).schedule.get(0));
-        assertEquals(OpeningHoursParser.DayStatus.CLOSED_DAY, result.get(Days.PUBLIC_HOLIDAY).status);
-        assertEquals(0, result.get(Days.PUBLIC_HOLIDAY).schedule.size());
+        assertEquals(OpeningHoursParser.DayStatus.OPEN24, result.get(Days.MONDAY).status());
+        assertEquals(new OpenCloseTime("0:00", "24:00"), result.get(Days.MONDAY).schedule().get(0));
+        assertEquals(OpeningHoursParser.DayStatus.OPEN24, result.get(Days.TUESDAY).status());
+        assertEquals(new OpenCloseTime("0:00", "24:00"), result.get(Days.TUESDAY).schedule().get(0));
+        assertEquals(OpeningHoursParser.DayStatus.OPEN24, result.get(Days.WEDNESDAY).status());
+        assertEquals(new OpenCloseTime("0:00", "24:00"), result.get(Days.WEDNESDAY).schedule().get(0));
+        assertEquals(OpeningHoursParser.DayStatus.OPEN24, result.get(Days.THURSDAY).status());
+        assertEquals(new OpenCloseTime("0:00", "24:00"), result.get(Days.THURSDAY).schedule().get(0));
+        assertEquals(OpeningHoursParser.DayStatus.OPEN24, result.get(Days.FRIDAY).status());
+        assertEquals(new OpenCloseTime("0:00", "24:00"), result.get(Days.FRIDAY).schedule().get(0));
+        assertEquals(OpeningHoursParser.DayStatus.OPEN24, result.get(Days.SATURDAY).status());
+        assertEquals(new OpenCloseTime("0:00", "24:00"), result.get(Days.SATURDAY).schedule().get(0));
+        assertEquals(OpeningHoursParser.DayStatus.OPEN24, result.get(Days.SUNDAY).status());
+        assertEquals(new OpenCloseTime("0:00", "24:00"), result.get(Days.SUNDAY).schedule().get(0));
+        assertEquals(OpeningHoursParser.DayStatus.CLOSED_DAY, result.get(Days.PUBLIC_HOLIDAY).status());
+        assertEquals(0, result.get(Days.PUBLIC_HOLIDAY).schedule().size());
     }
 
     @Test
@@ -185,27 +185,27 @@ class OpeningHoursParserTest {
         Map<Days, OpeningHoursParser.DaySchedule> result = parser.decode(input);
 
         assertEquals(8, result.size());
-        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.MONDAY).status);
-        assertEquals(new OpenCloseTime("10:00","12:00"), result.get(Days.MONDAY).schedule.get(0));
-        assertEquals(new OpenCloseTime("13:30","03:00"), result.get(Days.MONDAY).schedule.get(1));
-        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.TUESDAY).status);
-        assertEquals(new OpenCloseTime("10:00","12:00"), result.get(Days.TUESDAY).schedule.get(0));
-        assertEquals(new OpenCloseTime("13:30","03:00"), result.get(Days.TUESDAY).schedule.get(1));
-        assertEquals(OpeningHoursParser.DayStatus.UNKNOWN, result.get(Days.WEDNESDAY).status);
-        assertEquals(0, result.get(Days.WEDNESDAY).schedule.size());
-        assertEquals(OpeningHoursParser.DayStatus.UNKNOWN, result.get(Days.THURSDAY).status);
-        assertEquals(0, result.get(Days.THURSDAY).schedule.size());
-        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.FRIDAY).status);
-        assertEquals(new OpenCloseTime("10:00","12:00"), result.get(Days.FRIDAY).schedule.get(0));
-        assertEquals(new OpenCloseTime("13:30","03:00"), result.get(Days.FRIDAY).schedule.get(1));
-        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.SATURDAY).status);
-        assertEquals(new OpenCloseTime("10:00","12:00"), result.get(Days.SATURDAY).schedule.get(0));
-        assertEquals(new OpenCloseTime("13:30","03:00"), result.get(Days.SATURDAY).schedule.get(1));
-        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.SUNDAY).status);
-        assertEquals(new OpenCloseTime("10:00","12:00"), result.get(Days.SUNDAY).schedule.get(0));
-        assertEquals(new OpenCloseTime("13:30","03:00"), result.get(Days.SUNDAY).schedule.get(1));
-        assertEquals(OpeningHoursParser.DayStatus.UNKNOWN, result.get(Days.PUBLIC_HOLIDAY).status);
-        assertEquals(0, result.get(Days.PUBLIC_HOLIDAY).schedule.size());
+        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.MONDAY).status());
+        assertEquals(new OpenCloseTime("10:00", "12:00"), result.get(Days.MONDAY).schedule().get(0));
+        assertEquals(new OpenCloseTime("13:30", "03:00"), result.get(Days.MONDAY).schedule().get(1));
+        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.TUESDAY).status());
+        assertEquals(new OpenCloseTime("10:00", "12:00"), result.get(Days.TUESDAY).schedule().get(0));
+        assertEquals(new OpenCloseTime("13:30", "03:00"), result.get(Days.TUESDAY).schedule().get(1));
+        assertEquals(OpeningHoursParser.DayStatus.UNKNOWN, result.get(Days.WEDNESDAY).status());
+        assertEquals(0, result.get(Days.WEDNESDAY).schedule().size());
+        assertEquals(OpeningHoursParser.DayStatus.UNKNOWN, result.get(Days.THURSDAY).status());
+        assertEquals(0, result.get(Days.THURSDAY).schedule().size());
+        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.FRIDAY).status());
+        assertEquals(new OpenCloseTime("10:00", "12:00"), result.get(Days.FRIDAY).schedule().get(0));
+        assertEquals(new OpenCloseTime("13:30", "03:00"), result.get(Days.FRIDAY).schedule().get(1));
+        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.SATURDAY).status());
+        assertEquals(new OpenCloseTime("10:00", "12:00"), result.get(Days.SATURDAY).schedule().get(0));
+        assertEquals(new OpenCloseTime("13:30", "03:00"), result.get(Days.SATURDAY).schedule().get(1));
+        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.SUNDAY).status());
+        assertEquals(new OpenCloseTime("10:00", "12:00"), result.get(Days.SUNDAY).schedule().get(0));
+        assertEquals(new OpenCloseTime("13:30", "03:00"), result.get(Days.SUNDAY).schedule().get(1));
+        assertEquals(OpeningHoursParser.DayStatus.UNKNOWN, result.get(Days.PUBLIC_HOLIDAY).status());
+        assertEquals(0, result.get(Days.PUBLIC_HOLIDAY).schedule().size());
     }
 
     @Test
@@ -216,27 +216,27 @@ class OpeningHoursParserTest {
         Map<Days, OpeningHoursParser.DaySchedule> result = parser.decode(input);
 
         assertEquals(8, result.size());
-        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.MONDAY).status);
-        assertEquals(new OpenCloseTime("10:00","12:00"), result.get(Days.MONDAY).schedule.get(0));
-        assertEquals(new OpenCloseTime("13:30","03:00"), result.get(Days.MONDAY).schedule.get(1));
-        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.TUESDAY).status);
-        assertEquals(new OpenCloseTime("10:00","12:00"), result.get(Days.TUESDAY).schedule.get(0));
-        assertEquals(new OpenCloseTime("13:30","03:00"), result.get(Days.TUESDAY).schedule.get(1));
-        assertEquals(OpeningHoursParser.DayStatus.UNKNOWN, result.get(Days.WEDNESDAY).status);
-        assertEquals(0, result.get(Days.WEDNESDAY).schedule.size());
-        assertEquals(OpeningHoursParser.DayStatus.UNKNOWN, result.get(Days.THURSDAY).status);
-        assertEquals(0, result.get(Days.THURSDAY).schedule.size());
-        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.FRIDAY).status);
-        assertEquals(new OpenCloseTime("10:00","12:00"), result.get(Days.FRIDAY).schedule.get(0));
-        assertEquals(new OpenCloseTime("13:30","03:00"), result.get(Days.FRIDAY).schedule.get(1));
-        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.SATURDAY).status);
-        assertEquals(new OpenCloseTime("10:00","12:00"), result.get(Days.SATURDAY).schedule.get(0));
-        assertEquals(new OpenCloseTime("13:30","03:00"), result.get(Days.SATURDAY).schedule.get(1));
-        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.SUNDAY).status);
-        assertEquals(new OpenCloseTime("10:00","12:00"), result.get(Days.SUNDAY).schedule.get(0));
-        assertEquals(new OpenCloseTime("13:30","03:00"), result.get(Days.SUNDAY).schedule.get(1));
-        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.PUBLIC_HOLIDAY).status);
-        assertEquals(new OpenCloseTime("10:00","24:00"), result.get(Days.PUBLIC_HOLIDAY).schedule.get(0));
+        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.MONDAY).status());
+        assertEquals(new OpenCloseTime("10:00", "12:00"), result.get(Days.MONDAY).schedule().get(0));
+        assertEquals(new OpenCloseTime("13:30", "03:00"), result.get(Days.MONDAY).schedule().get(1));
+        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.TUESDAY).status());
+        assertEquals(new OpenCloseTime("10:00", "12:00"), result.get(Days.TUESDAY).schedule().get(0));
+        assertEquals(new OpenCloseTime("13:30", "03:00"), result.get(Days.TUESDAY).schedule().get(1));
+        assertEquals(OpeningHoursParser.DayStatus.UNKNOWN, result.get(Days.WEDNESDAY).status());
+        assertEquals(0, result.get(Days.WEDNESDAY).schedule().size());
+        assertEquals(OpeningHoursParser.DayStatus.UNKNOWN, result.get(Days.THURSDAY).status());
+        assertEquals(0, result.get(Days.THURSDAY).schedule().size());
+        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.FRIDAY).status());
+        assertEquals(new OpenCloseTime("10:00", "12:00"), result.get(Days.FRIDAY).schedule().get(0));
+        assertEquals(new OpenCloseTime("13:30", "03:00"), result.get(Days.FRIDAY).schedule().get(1));
+        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.SATURDAY).status());
+        assertEquals(new OpenCloseTime("10:00", "12:00"), result.get(Days.SATURDAY).schedule().get(0));
+        assertEquals(new OpenCloseTime("13:30", "03:00"), result.get(Days.SATURDAY).schedule().get(1));
+        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.SUNDAY).status());
+        assertEquals(new OpenCloseTime("10:00", "12:00"), result.get(Days.SUNDAY).schedule().get(0));
+        assertEquals(new OpenCloseTime("13:30", "03:00"), result.get(Days.SUNDAY).schedule().get(1));
+        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.PUBLIC_HOLIDAY).status());
+        assertEquals(new OpenCloseTime("10:00", "24:00"), result.get(Days.PUBLIC_HOLIDAY).schedule().get(0));
     }
 
     @Test
@@ -247,22 +247,22 @@ class OpeningHoursParserTest {
         Map<Days, OpeningHoursParser.DaySchedule> result = parser.decode(input);
 
         assertEquals(8, result.size());
-        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.MONDAY).status);
-        assertEquals(new OpenCloseTime("10:00","12:00"), result.get(Days.MONDAY).schedule.get(0));
-        assertEquals(OpeningHoursParser.DayStatus.UNKNOWN, result.get(Days.TUESDAY).status);
-        assertEquals(0, result.get(Days.TUESDAY).schedule.size());
-        assertEquals(OpeningHoursParser.DayStatus.UNKNOWN, result.get(Days.WEDNESDAY).status);
-        assertEquals(0, result.get(Days.WEDNESDAY).schedule.size());
-        assertEquals(OpeningHoursParser.DayStatus.UNKNOWN, result.get(Days.THURSDAY).status);
-        assertEquals(0, result.get(Days.THURSDAY).schedule.size());
-        assertEquals(OpeningHoursParser.DayStatus.UNKNOWN, result.get(Days.FRIDAY).status);
-        assertEquals(0, result.get(Days.FRIDAY).schedule.size());
-        assertEquals(OpeningHoursParser.DayStatus.UNKNOWN, result.get(Days.SATURDAY).status);
-        assertEquals(0, result.get(Days.SATURDAY).schedule.size());
-        assertEquals(OpeningHoursParser.DayStatus.UNKNOWN, result.get(Days.SUNDAY).status);
-        assertEquals(0, result.get(Days.SUNDAY).schedule.size());
-        assertEquals(OpeningHoursParser.DayStatus.UNKNOWN, result.get(Days.PUBLIC_HOLIDAY).status);
-        assertEquals(0, result.get(Days.PUBLIC_HOLIDAY).schedule.size());
+        assertEquals(OpeningHoursParser.DayStatus.OPEN_DAY, result.get(Days.MONDAY).status());
+        assertEquals(new OpenCloseTime("10:00", "12:00"), result.get(Days.MONDAY).schedule().get(0));
+        assertEquals(OpeningHoursParser.DayStatus.UNKNOWN, result.get(Days.TUESDAY).status());
+        assertEquals(0, result.get(Days.TUESDAY).schedule().size());
+        assertEquals(OpeningHoursParser.DayStatus.UNKNOWN, result.get(Days.WEDNESDAY).status());
+        assertEquals(0, result.get(Days.WEDNESDAY).schedule().size());
+        assertEquals(OpeningHoursParser.DayStatus.UNKNOWN, result.get(Days.THURSDAY).status());
+        assertEquals(0, result.get(Days.THURSDAY).schedule().size());
+        assertEquals(OpeningHoursParser.DayStatus.UNKNOWN, result.get(Days.FRIDAY).status());
+        assertEquals(0, result.get(Days.FRIDAY).schedule().size());
+        assertEquals(OpeningHoursParser.DayStatus.UNKNOWN, result.get(Days.SATURDAY).status());
+        assertEquals(0, result.get(Days.SATURDAY).schedule().size());
+        assertEquals(OpeningHoursParser.DayStatus.UNKNOWN, result.get(Days.SUNDAY).status());
+        assertEquals(0, result.get(Days.SUNDAY).schedule().size());
+        assertEquals(OpeningHoursParser.DayStatus.UNKNOWN, result.get(Days.PUBLIC_HOLIDAY).status());
+        assertEquals(0, result.get(Days.PUBLIC_HOLIDAY).schedule().size());
     }
 
     @Test
