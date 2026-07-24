@@ -176,7 +176,14 @@ public class JpPostalUtil {
      * @return OverpassAPIから返ってきたPOIのリスト 
      * */
     public static List<OsmPoi> callOverpass(String queryBody) throws IOException,IllegalStateException {
-        String query = "[out:json][timeout:60];" + queryBody + "out meta center qt;";
+        return callOverpass(queryBody, 60);
+    }
+
+    /**
+     * @param timeout クエリのサーバサイド処理のタイムアウト秒数
+     */
+    public static List<OsmPoi> callOverpass(String queryBody, int timeout) throws IOException, IllegalStateException {
+        String query = "[out:json][timeout:"+timeout+"];" + queryBody + "out meta center qt;";
 
         List<OsmPoi> resultPois = new ArrayList<>();
         try {
