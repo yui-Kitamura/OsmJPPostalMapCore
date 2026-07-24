@@ -72,13 +72,13 @@ public class OpeningHoursParser extends AbstParser<OpeningHoursParser.DaySchedul
             String days = "", hours = "";
             for (String s : spaced) {
                 try {
-                    Days.getFromLabel(s.substring(0,2));
+                    Days.getFromLabel(s.split("-|,")[0]);
                     days += s;
                 }catch (IllegalArgumentException e) {
                     hours += s;
                 }
             }
-            String[] subParts = new String[]{days, hours};                    
+            String[] subParts = new String[]{days, hours};
             String daysPart = subParts[0];
             String timesPart = subParts.length > 1 ? subParts[1] : "";
 
