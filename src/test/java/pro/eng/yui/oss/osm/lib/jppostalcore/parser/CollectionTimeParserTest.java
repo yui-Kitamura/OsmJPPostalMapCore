@@ -80,4 +80,17 @@ class CollectionTimeParserTest {
 
         assertEquals(input.getOrigin(), parser.encode(result).getOrigin());
     }
+
+    @Test
+    void decodeOverrideOnWeekdays(){
+        CollectionTimes input = new CollectionTimes("Mo-Fr 9:00,17:00; Mo,We 9:00,12:00");
+        CollectionTimeParser parser = new CollectionTimeParser();
+        Map<Days, CollectionTimeParser.DaySchedule> result = parser.decode(input);
+        assertEquals(new CollectionTime("9:00"), result.get(Days.MONDAY).schedule().get(0));
+        assertEquals(new CollectionTime("12:00"), result.get(Days.MONDAY).schedule().get(1));
+        assertEquals(new CollectionTime("9:00"), result.get(Days.WEDNESDAY).schedule().get(0));
+        assertEquals(new CollectionTime("12:00"), result.get(Days.WEDNESDAY).schedule().get(1));
+        assertEquals(new CollectionTime("9:00"), result.get(Days.FRIDAY).schedule().get(0));
+        assertEquals(new CollectionTime("17:00"), result.get(Days.FRIDAY).schedule().get(1));
+    }
 }

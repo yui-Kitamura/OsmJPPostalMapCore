@@ -77,7 +77,8 @@ public class CollectionTimeParser extends AbstParser<CollectionTimeParser.DaySch
         parts = expandedParts.toArray(new String[0]);
         parts = reverse(parts); //後方のルール優先
         try {
-            for (Days d : Days.values()) {
+            Days[] days = Days.values();
+            for (Days d : days) {
                 for (String part : parts) {
                     CollectionTimeParser.DaySchedule schedule = fetchRuleToDay(d, part);
                     if (schedule != null) {

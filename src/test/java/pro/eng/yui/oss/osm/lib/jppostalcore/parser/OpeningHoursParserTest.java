@@ -124,6 +124,16 @@ class OpeningHoursParserTest {
         assertEquals(OpeningHoursParser.DayStatus.CLOSED_DAY, result.get(Days.PUBLIC_HOLIDAY).status());
         assertEquals(0, result.get(Days.PUBLIC_HOLIDAY).schedule().size());
     }
+    
+    @Test
+    void decodeOverrideOnWeekdays(){
+        OpeningHours input = new OpeningHours("Mo-Fr 9:00-17:00; Mo,We 9:00-12:00");
+        OpeningHoursParser parser = new OpeningHoursParser();
+        Map<Days, OpeningHoursParser.DaySchedule> result = parser.decode(input);
+        assertEquals(new OpenCloseTime("9:00","12:00"), result.get(Days.MONDAY).schedule().get(0));
+        assertEquals(new OpenCloseTime("9:00","12:00"), result.get(Days.WEDNESDAY).schedule().get(0));
+        assertEquals(new OpenCloseTime("9:00","17:00"), result.get(Days.FRIDAY).schedule().get(0));
+    }
 
     @Test
     void decode24_7(){
