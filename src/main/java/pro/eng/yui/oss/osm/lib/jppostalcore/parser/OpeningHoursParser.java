@@ -108,7 +108,7 @@ public class OpeningHoursParser extends AbstParser<OpeningHoursParser.DaySchedul
     private DaySchedule fetchRuleToDay(Days day, String part){
         String[] parts = part.split(" ", 2);
         if (parts.length < 2){ throw new IllegalArgumentException(part); }
-        if (day.getLabel().equals(parts[0])) {
+        if (day.label.equals(parts[0])) {
             if (parts[1].equals("off")) {
                 return new DaySchedule(DayStatus.CLOSED_DAY, new ArrayList<>());
             }

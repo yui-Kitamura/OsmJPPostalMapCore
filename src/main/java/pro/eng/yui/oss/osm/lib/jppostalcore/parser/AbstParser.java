@@ -96,7 +96,7 @@ public abstract class AbstParser<T> implements IParser<T> {
         }
 
         if (checked.contains(Days.PUBLIC_HOLIDAY) == false) {
-            result.add(Days.PUBLIC_HOLIDAY.getLabel() + " " + progress.get(Days.PUBLIC_HOLIDAY));
+            result.add(Days.PUBLIC_HOLIDAY.label + " " + progress.get(Days.PUBLIC_HOLIDAY));
         }
         return result;
     }
@@ -105,7 +105,7 @@ public abstract class AbstParser<T> implements IParser<T> {
         List<Days> dayOrder = Arrays.asList(Days.values());
         int startIdx = dayOrder.indexOf(first);
 
-        StringBuilder daysStr = new StringBuilder(first.getLabel());
+        StringBuilder daysStr = new StringBuilder(first.label);
         for (int i = startIdx + 1; i < dayOrder.size()-1; i++) {
             Days currentDay = dayOrder.get(i);
             if (days.contains(currentDay)) {
@@ -122,7 +122,7 @@ public abstract class AbstParser<T> implements IParser<T> {
         return daysStr.toString().replaceAll("-(?:[A-Z][a-z]-)+","-");
     }
     protected String appendDay(Days day, boolean contains) {
-        return contains ? "-"+day.getLabel() : ","+day.getLabel();
+        return contains ? "-"+day.label : ","+day.label;
     }
 
     protected List<Days> findSame(Map<Days, String> list, Days key) {

@@ -1,37 +1,47 @@
 package pro.eng.yui.oss.osm.lib.jppostalcore.types;
 
-import java.util.List;
-
 /** OSM形式の曜日 */
 public enum Days {
-    MONDAY("Mo", WeekDay.WEEK_DAY),
-    TUESDAY("Tu", WeekDay.WEEK_DAY),
-    WEDNESDAY("We", WeekDay.WEEK_DAY),
-    THURSDAY("Th", WeekDay.WEEK_DAY),
-    FRIDAY("Fr", WeekDay.WEEK_DAY),
-    SATURDAY("Sa", WeekDay.WEEKEND),
-    SUNDAY("Su", WeekDay.WEEKEND),
-    PUBLIC_HOLIDAY("PH", WeekDay.HOLIDAY);
+    MONDAY("Mo", "月", WeekDay.WEEK_DAY),
+    TUESDAY("Tu", "火", WeekDay.WEEK_DAY),
+    WEDNESDAY("We", "水", WeekDay.WEEK_DAY),
+    THURSDAY("Th", "木", WeekDay.WEEK_DAY),
+    FRIDAY("Fr", "金", WeekDay.WEEK_DAY),
+    SATURDAY("Sa", "土", WeekDay.WEEKEND),
+    SUNDAY("Su", "日", WeekDay.WEEKEND),
+    PUBLIC_HOLIDAY("PH", "祝", WeekDay.HOLIDAY);
     
-    private final String label;
-    private final WeekDay dayType;
+    public final String label;
+    public final String jaLabel;
+    public final WeekDay dayType;
     /** 平日/週末/祝日 */
     public enum WeekDay {
-        WEEK_DAY, WEEKEND, HOLIDAY;
+        WEEK_DAY("Mo-Fr","平日"),
+        WEEKEND("Sa-Su","週末"),
+        HOLIDAY("PH","祝日");
+        
+        public final String OSMFormat;
+        public final String jaLabel;
+        
+        WeekDay(String osmFormat, String label){
+            this.OSMFormat = osmFormat;
+            this.jaLabel = label;
+        }
     }
     
-    Days(String label, WeekDay dayType){
+    Days(String label, String jaLabel, WeekDay dayType){
         this.label = label;
+        this.jaLabel = jaLabel;
         this.dayType = dayType;
     }
-    /** OSM形式の曜日表記を返します */
-    public String getLabel(){ return label; }
+
     /** 文字列から曜日を返します
+     * @param in OSM形式または日本語1文字の曜日表現
      * @return 文字列から解釈した曜日
      * @throws IllegalArgumentException 解釈できなかった時 */
-    public Days getFromLabel(String in){
+    public static Days getFromLabel(String in){
         for (Days day: Days.values()) {
-            if ((day.label.equalsIgnoreCase(in))) {
+            if (day.label.equals(in) || day.jaLabel.equals(in)) {
                 return day;
             }
         }
