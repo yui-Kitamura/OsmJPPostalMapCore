@@ -156,9 +156,18 @@ public class JpPostalUtil {
      * @throws IllegalStateException 最大試行回数到達してもなお成功しなかった場合
      * */
     public static List<OsmPoi> callOverpass(String queryBody, int maxRetry, int interval) throws IOException,IllegalStateException {
+        return callOverpass(queryBody, maxRetry, interval, 60);
+    }
+    /** 429エラーハンドリング版（timeout指定可能）
+     * @param maxRetry 最大再試行回数 min 1
+     * @param interval 試行の間隔秒数
+     * @throws IOException 致命的失敗
+     * @throws IllegalStateException 最大試行回数到達してもなお成功しなかった場合
+     * */
+    public static List<OsmPoi> callOverpass(String queryBody, int maxRetry, int interval, int timeout) throws IOException,IllegalStateException {
         for (int tryCount = 0; tryCount<maxRetry; tryCount++) {
             try {
-                int timeout = 60 + tryCount*15; //try毎にクエリタイムアウトを増加させる
+                timeout = timeout + tryCount*15; //try毎にクエリタイムアウトを増加させる
                 return callOverpass(queryBody, timeout);
             }catch (IllegalStateException|IOException e) {
                 try {
