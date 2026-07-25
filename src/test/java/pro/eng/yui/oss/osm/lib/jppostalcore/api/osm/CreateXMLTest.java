@@ -59,4 +59,29 @@ class CreateXMLTest {
         assertTrue(xml.contains("<tag k=\"k&quot;&gt;\" v=\"v&amp;\"/>"));
         assertTrue(xml.contains("</way>"));
     }
+
+    @Test
+    void testOpeningHoursFormat() {
+        ChangeSetInfo info = new ChangeSetInfo(123, "cmt", "edt", null);
+        Map<String, String> tags = new HashMap<>();
+        tags.put("opening_hours", "Mo-Fr 09:00-17:30; Sa 08:00-12:00");
+        OsmPoi poi = new OsmPoi(35.0, 135.0, "node", tags);
+
+        String xml = CreateXML.createElement(info, poi);
+
+        assertTrue(xml.contains("<tag k=\"opening_hours\" v=\"Mo-Fr 09:00-17:30; Sa 08:00-12:00\"/>"));
+    }
+
+    @Test
+    void testCollectionTimesFormat() {
+        ChangeSetInfo info = new ChangeSetInfo(123, "cmt", "edt", null);
+        Map<String, String> tags = new HashMap<>();
+        tags.put("collection_times", "Mo-Fr 09:00,17:30; Sa 08:00");
+        OsmPoi poi = new OsmPoi(35.0, 135.0, "node", tags);
+
+        String xml = CreateXML.createElement(info, poi);
+
+        assertTrue(xml.contains("<tag k=\"collection_times\" v=\"Mo-Fr 09:00,17:30; Sa 08:00\"/>"));
+    }
+
 }

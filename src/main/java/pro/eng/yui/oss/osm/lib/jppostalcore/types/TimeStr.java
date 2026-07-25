@@ -28,7 +28,10 @@ public class TimeStr {
     
     @Override
     public String toString(){
-        return value;
+        String[] split = value.split(":");
+        int hour = Integer.parseInt(split[0]);
+        int minute = Integer.parseInt(split[1]);
+        return String.format("%02d:%02d", hour, minute);
     }
 
     @Override
