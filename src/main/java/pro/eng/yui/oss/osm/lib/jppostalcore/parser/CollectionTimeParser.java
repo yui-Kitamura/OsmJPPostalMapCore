@@ -48,11 +48,17 @@ public class CollectionTimeParser extends AbstParser<CollectionTimeParser.DaySch
         }
 
         String plane = tagValue.getOrigin();
+        if (plane == null || plane.trim().isEmpty()) {
+            return null;
+        }
 
         String[] parts = plane.split(";");
         List<String> expandedParts = new ArrayList<>();
 
         for (String part : parts) {
+            if (part.trim().isEmpty()) {
+                return null;
+            }
             part = part.trim();
 
             // 曜日なしの要素は Mo-Su と見做す
@@ -63,18 +69,46 @@ public class CollectionTimeParser extends AbstParser<CollectionTimeParser.DaySch
             String[] spaced = part.split(" ");
             StringBuilder daysBuilder = new StringBuilder();
             StringBuilder hoursBuilder = new StringBuilder();
+            boolean hoursStarted = false;
             for (String s : spaced) {
-                try {
-                    Days.getFromLabel(s.split("-|,", 0)[0]);
-                    if (daysBuilder.length() > 0) daysBuilder.append(",");
-                    daysBuilder.append(s);
-                } catch (IllegalArgumentException e) {
-                    if (hoursBuilder.length() > 0) hoursBuilder.append(" ");
-                    hoursBuilder.append(s);
+                if (s.isEmpty()){ continue; }
+                String trimmedS = s.trim();
+                if (!hoursStarted) {
+                    try {
+                        // 曜日のラベル(Mo, Tu... PH)が含まれているかチェック
+                        boolean containsDay = false;
+                        for (String label : Days.labels()) {
+                            if (trimmedS.contains(label)) {
+                                containsDay = true;
+                                break;
+                            }
+                        }
+                        if (containsDay) {
+                            if (daysBuilder.length() > 0){ daysBuilder.append(","); }
+                            String dayStr = trimmedS;
+                            while (dayStr.endsWith(",")) {
+                                dayStr = dayStr.substring(0, dayStr.length() - 1);
+                            }
+                            daysBuilder.append(dayStr);
+                        } else {
+                            hoursStarted = true;
+                        }
+                    } catch (Exception e) {
+                        hoursStarted = true;
+                    }
+                }
+
+                if (hoursStarted) {
+                    if (hoursBuilder.length() > 0){ hoursBuilder.append(" "); }
+                    hoursBuilder.append(trimmedS);
                 }
             }
             String daysPart = daysBuilder.toString();
             String timesPart = hoursBuilder.toString();
+
+            if (daysPart.isEmpty()) {
+                return null;
+            }
 
             String[] dayGroups = daysPart.split(",");
             for (String dayGroup : dayGroups) {
@@ -99,6 +133,8 @@ public class CollectionTimeParser extends AbstParser<CollectionTimeParser.DaySch
                     }
                 }
             }
+        }catch (IllegalArgumentException e) {
+            return null;
         }catch (Exception e) {
             System.err.println("decode err: caused by: "+ e.getMessage());
             return null;

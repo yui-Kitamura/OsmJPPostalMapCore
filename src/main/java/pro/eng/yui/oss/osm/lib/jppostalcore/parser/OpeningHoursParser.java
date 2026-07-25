@@ -51,15 +51,21 @@ public class OpeningHoursParser extends AbstParser<OpeningHoursParser.DaySchedul
         }
         
         String plane = tagValue.getOrigin();
+        if (plane == null || plane.trim().isEmpty()) {
+            return null;
+        }
 
         String[] parts = plane.split(";");
         List<String> expandedParts = new ArrayList<>();
 
         for (String part : parts) {
+            if (part.trim().isEmpty()) {
+                return null;
+            }
             part = part.trim();
 
             // 24/7 を Mo-Su,PH 0:00-24:00 に展開して再代入
-            if (part.equals("24/7")) {
+            if (part.trim().equals("24/7")) {
                 part = "Mo-Su,PH 0:00-24:00";
             }
 
@@ -71,18 +77,48 @@ public class OpeningHoursParser extends AbstParser<OpeningHoursParser.DaySchedul
             String[] spaced = part.split(" ");
             StringBuilder daysBuilder = new StringBuilder();
             StringBuilder hoursBuilder = new StringBuilder();
+            boolean hoursStarted = false;
             for (String s : spaced) {
-                try {
-                    Days.getFromLabel(s.split("-|,", 0)[0]);
-                    if (daysBuilder.length() > 0) daysBuilder.append(",");
-                    daysBuilder.append(s);
-                } catch (IllegalArgumentException e) {
-                    if (hoursBuilder.length() > 0) hoursBuilder.append(" ");
-                    hoursBuilder.append(s);
+                if (s.isEmpty()){ continue; }
+                String trimmedS = s.trim();
+                if (!hoursStarted) {
+                    try {
+                        // 曜日のラベル(Mo, Tu... PH)が含まれているかチェック
+                        boolean containsDay = false;
+                        for (String label : Days.labels()) {
+                            if (trimmedS.contains(label)) {
+                                containsDay = true;
+                                break;
+                            }
+                        }
+                        if (containsDay) {
+                            if (daysBuilder.length() > 0){ daysBuilder.append(","); }
+                            String dayStr = trimmedS;
+                            while (dayStr.endsWith(",")) {
+                                dayStr = dayStr.substring(0, dayStr.length() - 1);
+                            }
+                            daysBuilder.append(dayStr);
+                        } else {
+                            hoursStarted = true;
+                        }
+                    } catch (Exception e) {
+                        hoursStarted = true;
+                    }
+                }
+                
+                if (hoursStarted) {
+                    if (hoursBuilder.length() > 0){ hoursBuilder.append(" "); }
+                    hoursBuilder.append(trimmedS);
                 }
             }
             String daysPart = daysBuilder.toString();
             String timesPart = hoursBuilder.toString();
+
+            if (daysPart.isEmpty()) {
+                // If it's pure "off" or time-only, it should have been handled by addDefaultDaysIfNeeded
+                // If we reach here with empty daysPart, it means it was an invalid format or empty segment.
+                return null;
+            }
 
             String[] dayGroups = daysPart.split(",");
             for (String dayGroup : dayGroups) {
@@ -106,6 +142,8 @@ public class OpeningHoursParser extends AbstParser<OpeningHoursParser.DaySchedul
                     }
                 }
             }
+        }catch (IllegalArgumentException e) {
+            return null;
         }catch (Exception e) {
             System.err.println("decode err: caused by: "+ e.getMessage());
             return null;
@@ -121,7 +159,7 @@ public class OpeningHoursParser extends AbstParser<OpeningHoursParser.DaySchedul
         String[] parts = part.split(" ", 2);
         if (parts.length < 2){ throw new IllegalArgumentException(part); }
         if (day.label.equals(parts[0])) {
-            if (parts[1].equals("off")) {
+            if (parts[1].trim().equals("off")) {
                 return new DaySchedule(DayStatus.CLOSED_DAY, new ArrayList<>());
             }
             List<OpenCloseTime> openHours = new ArrayList<>();
@@ -129,8 +167,11 @@ public class OpeningHoursParser extends AbstParser<OpeningHoursParser.DaySchedul
             for (int i=0; i<hourParts.length; i++) {
                 //10:00-12:00 の分解処理
                 String[] hours = hourParts[i].trim().split("-",2);
-                openHours.add(new OpenCloseTime(hours[0], hours[1]));
-                if (i == 0 && hourParts.length == 1 && hours[0].equals("0:00") && hours[1].equals("24:00")) {
+                if (hours.length < 2) {
+                    throw new IllegalArgumentException("invalid time format: " + hourParts[i]);
+                }
+                openHours.add(new OpenCloseTime(hours[0].trim(), hours[1].trim()));
+                if (i == 0 && hourParts.length == 1 && hours[0].trim().equals("0:00") && hours[1].trim().equals("24:00")) {
                     return new DaySchedule(DayStatus.OPEN24, openHours);
                 }
             }
