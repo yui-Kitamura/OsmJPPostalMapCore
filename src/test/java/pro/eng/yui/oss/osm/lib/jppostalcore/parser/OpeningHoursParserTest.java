@@ -400,5 +400,15 @@ class OpeningHoursParserTest {
 
         assertEquals(input.getOrigin(), parser.encode(result).getOrigin());
     }
-    
+
+    @Test
+    void encodeSingleDigitHours() {
+        OpeningHours input = new OpeningHours("Mo-Fr 9:00-17:00");
+
+        OpeningHoursParser parser = new OpeningHoursParser();
+        Map<Days, OpeningHoursParser.DaySchedule> result = parser.decode(input);
+
+        assertEquals("Mo-Fr 09:00-17:00", parser.encode(result).getOrigin());
+    }
+
 }

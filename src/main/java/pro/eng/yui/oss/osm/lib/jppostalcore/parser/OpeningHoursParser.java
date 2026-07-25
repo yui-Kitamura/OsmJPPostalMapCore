@@ -206,7 +206,7 @@ public class OpeningHoursParser extends AbstParser<OpeningHoursParser.DaySchedul
                 case UNKNOWN:
                     break;
                 case OPEN24:
-                    wip.put(d, "0:00-24:00");
+                    wip.put(d, "00:00-24:00");
                     break;
             }
         }

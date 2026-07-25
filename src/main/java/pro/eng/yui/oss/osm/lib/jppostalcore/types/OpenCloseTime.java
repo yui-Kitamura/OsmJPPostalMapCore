@@ -9,9 +9,9 @@ public class OpenCloseTime implements ITagPart{
         this.closeAt = new TimeStr(to);
     }
     
-    /** @return 0:00-12:00 formatted string */
+    /** @return 09:00-12:00 formatted string */
     public String toPairStr(){
-        return openAt.value + "-" + closeAt.value;
+        return openAt.toString() + "-" + closeAt.toString();
     }
 
     @Override

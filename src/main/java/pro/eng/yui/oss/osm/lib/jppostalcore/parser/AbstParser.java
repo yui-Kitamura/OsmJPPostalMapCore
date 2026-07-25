@@ -76,7 +76,7 @@ public abstract class AbstParser<T> implements IParser<T> {
         Set<Days> checked = EnumSet.noneOf(Days.class);
 
         List<Days> monTo = findSame(progress, Days.MONDAY);
-        if (progress.get(Days.MONDAY).equals("0:00-24:00") && monTo.size() == 8) {
+        if (progress.get(Days.MONDAY) != null && progress.get(Days.MONDAY).equals("00:00-24:00") && monTo.size() == 8) {
             result.add("24/7");
             return result;
         }
@@ -95,7 +95,7 @@ public abstract class AbstParser<T> implements IParser<T> {
             }
         }
 
-        if (checked.contains(Days.PUBLIC_HOLIDAY) == false) {
+        if (checked.contains(Days.PUBLIC_HOLIDAY) == false && progress.get(Days.PUBLIC_HOLIDAY) != null) {
             result.add(Days.PUBLIC_HOLIDAY.label + " " + progress.get(Days.PUBLIC_HOLIDAY));
         }
         return result;
