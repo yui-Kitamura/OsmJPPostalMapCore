@@ -43,6 +43,8 @@ public class JpPostalUtil {
 
     private static final Set<LocalDate> HOLIDAYS = new HashSet<>();
     private static final Properties buildInfo = new Properties();
+    private static final OpeningHoursParser openingHoursParser = new OpeningHoursParser();
+    private static final CollectionTimeParser collectionTimeParser = new CollectionTimeParser();
 
     /* initialize */
     static {
@@ -336,21 +338,17 @@ public class JpPostalUtil {
 
     /* opening_hours, collection_times 処理 */
     public static Map<Days, OpeningHoursParser.DaySchedule> decodeOpeningHours(OpeningHours tagValue){
-        OpeningHoursParser parser = new OpeningHoursParser();
-        return parser.decode(tagValue);
+        return openingHoursParser.decode(tagValue);
     }
     public static OpeningHours encodeOpeningHours(Map<Days, OpeningHoursParser.DaySchedule> data){
-        OpeningHoursParser parser = new OpeningHoursParser();
-        return parser.encode(data);
+        return openingHoursParser.encode(data);
     }
 
     public static Map<Days, CollectionTimeParser.DaySchedule> decodeCollectionTimes(CollectionTimes tagValue){
-        CollectionTimeParser parser = new CollectionTimeParser();
-        return parser.decode(tagValue);
+        return collectionTimeParser.decode(tagValue);
     }
     public static CollectionTimes encodeCollectionTimes(Map<Days, CollectionTimeParser.DaySchedule> data){
-        CollectionTimeParser parser = new CollectionTimeParser();
-        return parser.encode(data);
+        return collectionTimeParser.encode(data);
     }
     
     /* 住所関係処理 */
