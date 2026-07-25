@@ -50,17 +50,19 @@ public class CreateXML {
         StringBuilder xml = new StringBuilder();
         xml.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
         xml.append("<osm version=\"0.6\" generator=\"OsmJPPostalMap\">\n");
-        xml.append("  <").append(poi.getType()).append(" ")
-                .append("id=\"").append(poi.getId()).append("\" ");
+        xml.append("  <").append(poi.getType()).append(" ");
+
         if (isUpdate) {
-            xml.append("version=\"").append(poi.getVer()).append("\" ");
+            xml.append("id=\"").append(poi.getId()).append("\" ")
+               .append("version=\"").append(poi.getVer()).append("\" ");
         }
-        xml.append("changeset=\"").append(id.getId()).append("\" ");
 
         if ("node".equals(poi.getType())) {
-            xml.append("lat=\"").append(poi.getLat())
-                    .append("\" lon=\"").append(poi.getLon()).append("\" ");
+            xml.append("lat=\"").append(String.format(Locale.US, "%.7f", poi.getLat()))
+               .append("\" lon=\"").append(String.format(Locale.US, "%.7f", poi.getLon())).append("\" ");
         }
+
+        xml.append("changeset=\"").append(id.getId()).append("\" ");
         xml.append(">\n");
 
         String today = new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(new Date());
