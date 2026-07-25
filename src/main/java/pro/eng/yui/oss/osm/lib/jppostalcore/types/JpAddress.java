@@ -131,6 +131,7 @@ public class JpAddress {
         this.floor = null; isFloorAvail = Avail.UNSET;
         this.room = null; isRoomAvail = Avail.UNSET;
     }
+    public String getFull(){ return full; }
 
     public JpAddress(){}
 
