@@ -102,7 +102,7 @@ public class JpAddress {
     public void setFloor(String value){
         this.floor = value; this.isFloorAvail = isAvailFloor(value);
     }
-    public String getFloor(){ return housename; }
+    public String getFloor(){ return floor; }
 
     private Avail isRoomAvail = Avail.UNSET;
     public Avail isRoomAvail(){ return isRoomAvail; }
