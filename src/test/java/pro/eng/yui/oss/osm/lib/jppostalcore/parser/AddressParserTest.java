@@ -10,10 +10,9 @@ import static org.junit.jupiter.api.Assertions.*;
 class AddressParserTest {
 
     @Test
-    void getView() {
+    void testToString() {
         Map<String, String> tags = new HashMap<>();
-        AddressParser parser = new AddressParser();
-        assertEquals("", parser.getView(tags));
+        assertEquals("", AddressParser.JpAddress.of(tags).toString());
     }
 
     @Test
@@ -25,12 +24,12 @@ class AddressParserTest {
         tags.put("addr:neighbourhood", "丸の内二丁目");
         tags.put("addr:block_number", "7");
         tags.put("addr:housenumber", "2");
+        tags.put("addr:housename", "JPタワー");
 
-        AddressParser parser = new AddressParser();
-        String result = parser.getView(tags);
+        String result = AddressParser.JpAddress.of(tags).toString();
 
         assertNotNull(result);
-        assertEquals("東京都 千代田区 丸の内二丁目 7-2", result);
+        assertEquals("東京都千代田区丸の内二丁目7-2 JPタワー", result);
     }
 
     @Test
@@ -46,11 +45,10 @@ class AddressParserTest {
         tags.put("addr:housename", "アニメイトビル");
         tags.put("addr:floor", "1F");
 
-        AddressParser parser = new AddressParser();
-        String result = parser.getView(tags);
+        String result = AddressParser.JpAddress.of(tags).toString();
 
         assertNotNull(result);
-        assertEquals("大阪府 大阪市 浪速区 日本橋西一丁目 1-3 アニメイトビル 1F", result);
+        assertEquals("大阪府大阪市浪速区日本橋西一丁目1-3 アニメイトビル 1F", result);
     }
 
     @Test
@@ -64,11 +62,10 @@ class AddressParserTest {
         tags.put("addr:block_number", "542");
         tags.put("addr:housenumber", "2");
 
-        AddressParser parser = new AddressParser();
-        String result = parser.getView(tags);
+        String result = AddressParser.JpAddress.of(tags).toString();
 
         assertNotNull(result);
-        assertEquals("山梨県 中巨摩郡 昭和町 押越 542-2", result);
+        assertEquals("山梨県中巨摩郡昭和町押越542-2", result);
     }
 
     @Test
@@ -82,11 +79,11 @@ class AddressParserTest {
         tags.put("addr:block_number", "6");
         tags.put("addr:housenumber", "1");
 
-        AddressParser parser = new AddressParser();
-        String result = parser.getView(tags);
+        AddressParser.JpAddress address = AddressParser.JpAddress.of(tags);
+        String result = address.toString();
 
         assertNotNull(result);
-        assertEquals("山形県 鶴岡市 北京田 字下鳥ノ巣 6-1", result);
+        assertEquals("山形県鶴岡市北京田字下鳥ノ巣6-1", result);
     }
 
 }

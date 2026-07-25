@@ -60,7 +60,7 @@ public class AddressParser {
         public Avail isQuarterAvail(){ return isQuarterAvail; }
         private String quarter;
         public void setQuarter(String value){
-            this.quarter = value; this.isCityAvail = isCityAvail(value);
+            this.quarter = value; this.isQuarterAvail = isAvail(value);
         }
         public String getQuarter(){ return quarter; }
 
@@ -86,7 +86,7 @@ public class AddressParser {
         public Avail isHousenumberAvail(){ return isHousenumberAvail; }
         private String housenumber;
         public void setHousenumber(String value){
-            this.housenumber = value; this.isHousenameAvail = isAvail(value);
+            this.housenumber = value; this.isHousenumberAvail = isAvail(value);
         }
         public String getHousenumber(){ return housenumber; }
 
@@ -142,7 +142,8 @@ public class AddressParser {
             return result;
         }
         
-        public String getView(){
+        @Override
+        public String toString(){
             if (isFullAvail != Avail.UNSET) {
                 return "full: "+ full;
             }
@@ -164,7 +165,10 @@ public class AddressParser {
                 if (isHousenumberAvail != Avail.UNSET) { builder.append(housenumber); }
             }
             if (isHousenameAvail != Avail.UNSET) { builder.append(" ").append(housename).append(" "); }
-            if (isFloorAvail != Avail.UNSET) { builder.append(floor).append("階"); }
+            if (isFloorAvail != Avail.UNSET) { 
+                builder.append(floor);
+                if (!floor.endsWith("階") && !floor.endsWith("F")){ builder.append("階"); }
+            }
             if (isRoomAvail != Avail.UNSET) { builder.append(room); }
             return builder.toString().trim();
         }
