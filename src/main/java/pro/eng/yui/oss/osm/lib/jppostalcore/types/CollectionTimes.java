@@ -5,7 +5,8 @@ public class CollectionTimes implements TextValue {
     private final String value;
     
     public CollectionTimes(String value){
-        this.value = value.trim();
+        if (value != null){ value = value.trim(); }
+        this.value = value;
     }
 
     @Override
