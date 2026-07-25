@@ -69,18 +69,20 @@ public class OpeningHoursParser extends AbstParser<OpeningHoursParser.DaySchedul
             // partの曜日 Mo-Fr を Mo,Tu,We,Th,Fr のように展開して再代入
             // We-Mo のような週跨ぎに留意
             String[] spaced = part.split(" ");
-            String days = "", hours = "";
+            StringBuilder daysBuilder = new StringBuilder();
+            StringBuilder hoursBuilder = new StringBuilder();
             for (String s : spaced) {
                 try {
-                    Days.getFromLabel(s.split("-|,",0)[0]);
-                    days += s;
-                }catch (IllegalArgumentException e) {
-                    hours += s;
+                    Days.getFromLabel(s.split("-|,", 0)[0]);
+                    if (daysBuilder.length() > 0) daysBuilder.append(",");
+                    daysBuilder.append(s);
+                } catch (IllegalArgumentException e) {
+                    if (hoursBuilder.length() > 0) hoursBuilder.append(" ");
+                    hoursBuilder.append(s);
                 }
             }
-            String[] subParts = new String[]{days, hours};
-            String daysPart = subParts[0];
-            String timesPart = subParts.length > 1 ? subParts[1] : "";
+            String daysPart = daysBuilder.toString();
+            String timesPart = hoursBuilder.toString();
 
             String[] dayGroups = daysPart.split(",");
             for (String dayGroup : dayGroups) {
