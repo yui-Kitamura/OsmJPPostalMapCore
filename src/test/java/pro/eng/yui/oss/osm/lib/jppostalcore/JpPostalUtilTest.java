@@ -7,9 +7,11 @@ import org.junit.jupiter.api.TestMethodOrder;
 import pro.eng.yui.oss.osm.lib.jppostalcore.parser.CollectionTimeParser;
 import pro.eng.yui.oss.osm.lib.jppostalcore.types.CollectionTimes;
 import pro.eng.yui.oss.osm.lib.jppostalcore.types.Days;
+import pro.eng.yui.oss.osm.lib.jppostalcore.types.JpAddress;
 import pro.eng.yui.oss.osm.lib.jppostalcore.types.OsmPoi;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -113,5 +115,26 @@ class JpPostalUtilTest {
         Map<Days, CollectionTimeParser.DaySchedule> result = JpPostalUtil.decodeCollectionTimes(value);
 
         assertEquals(8, result.size());
+    }
+    
+    @Test
+    void getJpAddressToString(){
+        Map<String, String> addrMap = new HashMap<>();
+        final String input = "〒100-8994 東京都千代田区丸の内二丁目7-2";
+        addrMap.put("addr:full", input);
+        assertEquals("full: "+ input, JpPostalUtil.getAddressText(addrMap));
+    }
+    
+    @Test
+    void getJpAddressToStringWithParts(){
+        Map<String,String> addrMap = new HashMap<>();
+        addrMap.put("addr:postcode", "100-8994");
+        addrMap.put("addr:province", "東京都");
+        addrMap.put("addr:city", "千代田区");
+        addrMap.put("addr:neighbourhood", "丸の内二丁目");
+        addrMap.put("addr:block_number", "7");
+        addrMap.put("addr:housenumber", "2");
+        addrMap.put("addr:housename", "JPタワー");
+        assertEquals("〒100-8994 東京都千代田区丸の内二丁目7-2 JPタワー", JpPostalUtil.getAddressText(addrMap));
     }
 }

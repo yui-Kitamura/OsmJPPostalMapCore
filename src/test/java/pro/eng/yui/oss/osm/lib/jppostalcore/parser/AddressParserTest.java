@@ -1,6 +1,7 @@
 package pro.eng.yui.oss.osm.lib.jppostalcore.parser;
 
 import org.junit.jupiter.api.Test;
+import pro.eng.yui.oss.osm.lib.jppostalcore.types.JpAddress;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,13 +13,14 @@ class AddressParserTest {
     @Test
     void testToString() {
         Map<String, String> tags = new HashMap<>();
-        assertEquals("", AddressParser.JpAddress.of(tags).toString());
+        assertEquals("", JpAddress.of(tags).toString());
     }
 
     @Test
     void parseTokyoAddress() {
         // 東京都 千代田区 丸の内二丁目 7-2
         Map<String, String> tags = new HashMap<>();
+        tags.put("addr:postcode", "100-8994");
         tags.put("addr:province", "東京都");
         tags.put("addr:city", "千代田区");
         tags.put("addr:neighbourhood", "丸の内二丁目");
@@ -26,10 +28,10 @@ class AddressParserTest {
         tags.put("addr:housenumber", "2");
         tags.put("addr:housename", "JPタワー");
 
-        String result = AddressParser.JpAddress.of(tags).toString();
+        String result = JpAddress.of(tags).toString();
 
         assertNotNull(result);
-        assertEquals("東京都千代田区丸の内二丁目7-2 JPタワー", result);
+        assertEquals("〒100-8994 東京都千代田区丸の内二丁目7-2 JPタワー", result);
     }
 
     @Test
@@ -45,7 +47,7 @@ class AddressParserTest {
         tags.put("addr:housename", "アニメイトビル");
         tags.put("addr:floor", "1F");
 
-        String result = AddressParser.JpAddress.of(tags).toString();
+        String result = JpAddress.of(tags).toString();
 
         assertNotNull(result);
         assertEquals("大阪府大阪市浪速区日本橋西一丁目1-3 アニメイトビル 1F", result);
@@ -62,7 +64,7 @@ class AddressParserTest {
         tags.put("addr:block_number", "542");
         tags.put("addr:housenumber", "2");
 
-        String result = AddressParser.JpAddress.of(tags).toString();
+        String result = JpAddress.of(tags).toString();
 
         assertNotNull(result);
         assertEquals("山梨県中巨摩郡昭和町押越542-2", result);
@@ -79,7 +81,7 @@ class AddressParserTest {
         tags.put("addr:block_number", "6");
         tags.put("addr:housenumber", "1");
 
-        AddressParser.JpAddress address = AddressParser.JpAddress.of(tags);
+        JpAddress address = JpAddress.of(tags);
         String result = address.toString();
 
         assertNotNull(result);
