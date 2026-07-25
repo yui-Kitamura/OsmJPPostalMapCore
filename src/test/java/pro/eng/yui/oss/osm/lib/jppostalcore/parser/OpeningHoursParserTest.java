@@ -139,9 +139,11 @@ class OpeningHoursParserTest {
         OpeningHours input = new OpeningHours("Mo, Th-Fr 9:00-17:00");
         OpeningHoursParser parser = new OpeningHoursParser();
         Map<Days, OpeningHoursParser.DaySchedule> result = parser.decode(input);
+        assertNotNull(result);
         assertEquals(new OpenCloseTime("9:00","17:00"), result.get(Days.MONDAY).schedule().get(0));
         assertEquals(new OpenCloseTime("9:00","17:00"), result.get(Days.THURSDAY).schedule().get(0));
         assertEquals(new OpenCloseTime("9:00","17:00"), result.get(Days.FRIDAY).schedule().get(0));
+        assertEquals(OpeningHoursParser.DayStatus.UNKNOWN, result.get(Days.TUESDAY).status());
     }
     @Test
     void decodeWithSpaceInDaysAndRest(){

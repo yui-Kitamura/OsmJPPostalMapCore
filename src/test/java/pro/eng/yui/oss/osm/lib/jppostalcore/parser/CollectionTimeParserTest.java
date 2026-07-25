@@ -109,4 +109,40 @@ class CollectionTimeParserTest {
         assertEquals(new CollectionTime("9:00"), result.get(Days.FRIDAY).schedule().get(0));
         assertEquals(new CollectionTime("17:00"), result.get(Days.FRIDAY).schedule().get(1));
     }
+
+    @Test
+    void decodeWithSpaceInDays(){
+        CollectionTimes input = new CollectionTimes("Mo, Th-Fr 9:00, 17:00");
+        CollectionTimeParser parser = new CollectionTimeParser();
+        Map<Days, CollectionTimeParser.DaySchedule> result = parser.decode(input);
+        assertEquals(new CollectionTime("9:00"), result.get(Days.MONDAY).schedule().get(0));
+        assertEquals(new CollectionTime("17:00"), result.get(Days.MONDAY).schedule().get(1));
+        assertEquals(new CollectionTime("9:00"), result.get(Days.THURSDAY).schedule().get(0));
+        assertEquals(new CollectionTime("17:00"), result.get(Days.THURSDAY).schedule().get(1));
+        assertEquals(new CollectionTime("9:00"), result.get(Days.FRIDAY).schedule().get(0));
+        assertEquals(new CollectionTime("17:00"), result.get(Days.FRIDAY).schedule().get(1));
+    }
+
+    @Test
+    void decodeWithSpaceInDaysComplex(){
+        // User reported case: Mo, Th-Fr 9:00, 17:00
+        CollectionTimes input = new CollectionTimes("Mo, Th-Fr 9:00, 17:00");
+        CollectionTimeParser parser = new CollectionTimeParser();
+        Map<Days, CollectionTimeParser.DaySchedule> result = parser.decode(input);
+        
+        assertNotNull(result);
+        assertEquals(CollectionTimeParser.DayStatus.OPEN_DAY, result.get(Days.MONDAY).status());
+        assertEquals(new CollectionTime("9:00"), result.get(Days.MONDAY).schedule().get(0));
+        assertEquals(new CollectionTime("17:00"), result.get(Days.MONDAY).schedule().get(1));
+        
+        assertEquals(CollectionTimeParser.DayStatus.OPEN_DAY, result.get(Days.THURSDAY).status());
+        assertEquals(new CollectionTime("9:00"), result.get(Days.THURSDAY).schedule().get(0));
+        assertEquals(new CollectionTime("17:00"), result.get(Days.THURSDAY).schedule().get(1));
+        
+        assertEquals(CollectionTimeParser.DayStatus.OPEN_DAY, result.get(Days.FRIDAY).status());
+        assertEquals(new CollectionTime("9:00"), result.get(Days.FRIDAY).schedule().get(0));
+        assertEquals(new CollectionTime("17:00"), result.get(Days.FRIDAY).schedule().get(1));
+        
+        assertEquals(CollectionTimeParser.DayStatus.UNKNOWN, result.get(Days.TUESDAY).status());
+    }
 }
