@@ -4,7 +4,7 @@ public class OpeningHours implements TextValue {
     private final String value;
     
     public OpeningHours(String value){
-        this.value = value;
+        this.value = value.trim();
     }
 
     @Override
