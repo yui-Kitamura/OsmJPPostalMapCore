@@ -39,6 +39,22 @@ class CollectionTimeParserTest {
         assertEquals(CollectionTimeParser.DayStatus.OPEN_DAY, result.get(Days.PUBLIC_HOLIDAY).status());
         assertEquals(new CollectionTime("9:00"), result.get(Days.PUBLIC_HOLIDAY).schedule().get(0));
     }
+    
+    @Test
+    void decodeAllDay(){
+        CollectionTimes input = new CollectionTimes("Mo-Su,PH 7:30,8:50,12:30,13:55,15:40,19:00;");
+        
+        CollectionTimeParser parser = new CollectionTimeParser();
+        Map<Days, CollectionTimeParser.DaySchedule> result = parser.decode(input);
+        assertEquals(8, result.size());
+        assertEquals(CollectionTimeParser.DayStatus.OPEN_DAY, result.get(Days.MONDAY).status());
+        assertEquals(new CollectionTime("7:30"), result.get(Days.MONDAY).schedule().get(0));
+        assertEquals(new CollectionTime("8:50"), result.get(Days.MONDAY).schedule().get(1));
+        assertEquals(new CollectionTime("12:30"), result.get(Days.MONDAY).schedule().get(2));
+        assertEquals(new CollectionTime("13:55"), result.get(Days.MONDAY).schedule().get(3));
+        assertEquals(new CollectionTime("15:40"), result.get(Days.MONDAY).schedule().get(4));
+        assertEquals(new CollectionTime("19:00"), result.get(Days.MONDAY).schedule().get(5));
+    }
 
     @Test
     void decodeBasicWithSpace() {
