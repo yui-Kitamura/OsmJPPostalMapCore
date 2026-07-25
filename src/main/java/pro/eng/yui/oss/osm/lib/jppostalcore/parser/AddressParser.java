@@ -5,6 +5,12 @@ import java.util.Map;
 public class AddressParser {
 
     public String getView(Map<String, String> tags){
+        // Check for addr:full tag first and return it if present
+        String fullAddress = tags.get("addr:full");
+        if (fullAddress != null && !fullAddress.isEmpty()) {
+            return "full: "+ fullAddress;
+        }
+
         StringBuilder result = new StringBuilder();
 
         // Add postal code if available
