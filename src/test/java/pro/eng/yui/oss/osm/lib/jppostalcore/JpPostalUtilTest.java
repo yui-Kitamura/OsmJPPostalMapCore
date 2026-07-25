@@ -137,4 +137,35 @@ class JpPostalUtilTest {
         addrMap.put("addr:housename", "JPタワー");
         assertEquals("〒100-8994 東京都千代田区丸の内二丁目7-2 JPタワー", JpPostalUtil.getAddressText(addrMap));
     }
+    
+    @Test
+    void getJpAddress(){
+        Map<String,String> addrMap = new HashMap<>();
+        addrMap.put("addr:postcode", "100-8994");
+        addrMap.put("addr:province", "東京都");
+        addrMap.put("addr:county", "架空郡");
+        addrMap.put("addr:city", "架空町");
+        addrMap.put("addr:suburb", "架空区");
+        addrMap.put("addr:quarter", "架空");
+        addrMap.put("addr:neighbourhood", "字雲");
+        addrMap.put("addr:block_number", "7");
+        addrMap.put("addr:housenumber", "2");
+        addrMap.put("addr:housename", "JPタワー");
+        addrMap.put("addr:floor", "2F");
+        addrMap.put("addr:room", "201");
+        JpAddress address = JpPostalUtil.getAddress(addrMap);
+        assertEquals("〒100-8994 東京都架空郡架空町架空区架空字雲7-2 JPタワー 2F201", address.toString());
+        assertEquals("100-8994", address.getPostcode());
+        assertEquals("東京都", address.getProvince());
+        assertEquals("架空郡", address.getCounty());
+        assertEquals("架空町", address.getCity());
+        assertEquals("架空区", address.getSuburb());
+        assertEquals("架空", address.getQuarter());
+        assertEquals("字雲", address.getNeighbourhood());
+        assertEquals("7", address.getBlockNumber());
+        assertEquals("2", address.getHousenumber());
+        assertEquals("JPタワー", address.getHousename());
+        assertEquals("2F", address.getFloor());
+        assertEquals("201", address.getRoom());
+    }
 }
