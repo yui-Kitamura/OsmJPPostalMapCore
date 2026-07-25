@@ -9,6 +9,7 @@ import pro.eng.yui.oss.osm.lib.jppostalcore.api.osm.CreateXML;
 import pro.eng.yui.oss.osm.lib.jppostalcore.api.osm.OsmApi;
 import pro.eng.yui.oss.osm.lib.jppostalcore.api.overpass.OverpassApi;
 import pro.eng.yui.oss.osm.lib.jppostalcore.api.overpass.OverpassResponse;
+import pro.eng.yui.oss.osm.lib.jppostalcore.parser.AddressParser;
 import pro.eng.yui.oss.osm.lib.jppostalcore.parser.CollectionTimeParser;
 import pro.eng.yui.oss.osm.lib.jppostalcore.parser.OpeningHoursParser;
 import pro.eng.yui.oss.osm.lib.jppostalcore.types.*;
@@ -350,6 +351,13 @@ public class JpPostalUtil {
     public static CollectionTimes encodeCollectionTimes(Map<Days, CollectionTimeParser.DaySchedule> data){
         CollectionTimeParser parser = new CollectionTimeParser();
         return parser.encode(data);
+    }
+    
+    /* 住所関係処理 */
+    /** 設定されているtagから日本の標準的な住所表示を取得する */
+    public static String getAddressText(Map<String,String> tags){
+        AddressParser parser = new AddressParser();
+        return parser.getView(tags);
     }
     
 }
