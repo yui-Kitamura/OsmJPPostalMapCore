@@ -52,7 +52,7 @@ class JpPostalUtilTest {
     @Test
     void callOverpass(){
         String query = "node[\"name\"=\"合同会社北村由衣\"];";
-        List<OsmPoi> result = assertDoesNotThrow(()->JpPostalUtil.callOverpass(query));
+        List<OsmPoi> result = assertDoesNotThrow(()->JpPostalUtil.callOverpass(query, 3, 10));
         assertEquals(1, result.size());
         OsmPoi poi = result.getFirst();
         assertEquals(11608885454L, poi.getId());
