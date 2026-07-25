@@ -4,6 +4,8 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import pro.eng.yui.oss.osm.lib.jppostalcore.parser.CollectionTimeParser;
+import pro.eng.yui.oss.osm.lib.jppostalcore.types.CollectionTimes;
 import pro.eng.yui.oss.osm.lib.jppostalcore.types.Days;
 import pro.eng.yui.oss.osm.lib.jppostalcore.types.OsmPoi;
 
@@ -103,5 +105,13 @@ class JpPostalUtilTest {
     @Test
     void getPrefectureNotExist(){
         assertEquals(-99, JpPostalUtil.getPrefecture("海無県"));
+    }
+    
+    @Test
+    void decodeCollectionTime(){
+        CollectionTimes value = new CollectionTimes("Mo-Su,PH 7:30,8:50,12:30,13:55,15:40,19:00;");
+        Map<Days, CollectionTimeParser.DaySchedule> result = JpPostalUtil.decodeCollectionTimes(value);
+
+        assertEquals(8, result.size());
     }
 }

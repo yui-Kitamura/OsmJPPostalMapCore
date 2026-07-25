@@ -64,7 +64,7 @@ public class CollectionTimeParser extends AbstParser<CollectionTimeParser.DaySch
             String days = "", hours = "";
             for (String s : spaced) {
                 try {
-                    Days.getFromLabel(s.split("-|,")[0]);
+                    Days.getFromLabel(s.split("-|,",0)[0]);
                     days += s;
                 }catch (IllegalArgumentException e) {
                     hours += s;
