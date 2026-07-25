@@ -246,7 +246,8 @@ public class JpPostalUtil {
         if (res.isSuccessful() && res.body() != null) {
             return Long.parseLong(res.body().trim());
         }
-        throw new IOException(res.message());
+        String errorBody = res.errorBody() != null ? res.errorBody().string() : "";
+        throw new IOException(res.message() + (errorBody.isEmpty() ? "" : ": " + errorBody));
 
     }
     /** ChangeSetをクローズ（確定）する
@@ -268,11 +269,17 @@ public class JpPostalUtil {
         if (poi.getVer() == 0) {
             String xml = CreateXML.createElement(changeSetInfo, poi);
             Response<String> res = osmApi.createElement(auth, poi.getType(), xml).execute();
-            if (res.isSuccessful() == false){ throw new IOException(res.message()); }
-        }else {
+            if (res.isSuccessful() == false) {
+                String errorBody = res.errorBody() != null ? res.errorBody().string() : "";
+                throw new IOException(res.message() + (errorBody.isEmpty() ? "" : ": " + errorBody));
+            }
+        } else {
             String xml = CreateXML.modifyElement(changeSetInfo, poi);
             Response<String> res = osmApi.updateElement(auth, poi.getType(), poi.getId(), xml).execute();
-            if (res.isSuccessful() == false){ throw new IOException(res.message()); }
+            if (res.isSuccessful() == false) {
+                String errorBody = res.errorBody() != null ? res.errorBody().string() : "";
+                throw new IOException(res.message() + (errorBody.isEmpty() ? "" : ": " + errorBody));
+            }
         }
     }
     
