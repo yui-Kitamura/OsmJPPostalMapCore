@@ -328,7 +328,6 @@ public class JpPostalUtil {
     }
 
     /** ChangeSetをクローズ（確定）する
-     * @return CompletableFuture<Void>
      */
     public static CompletableFuture<Void> callOsmCloseChangeset(String accessToken, ChangeSetInfo id) {
         CompletableFuture<Void> future = new CompletableFuture<>();
@@ -355,7 +354,6 @@ public class JpPostalUtil {
      * @param accessToken OSMのTOKEN
      * @param changeSetInfo idを格納してあること
      * @param poi 対象POIの全情報
-     * @return CompletableFuture<Void>
      */
     public static CompletableFuture<Void> callOsmCreateOrModifyElement(String accessToken, ChangeSetInfo changeSetInfo, OsmPoi poi) {
         CompletableFuture<Void> future = new CompletableFuture<>();
