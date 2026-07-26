@@ -285,7 +285,7 @@ public class JpPostalUtil {
         }
     }
     
-    public static void callOsmCreateNote(String accessToken, String appName, String noteBody, long lat, long lon){
+    public static void callOsmCreateNote(String accessToken, String appName, String noteBody, double lat, double lon){
         String fullNoteBody = noteBody + "\n\n" + appName;
         String auth = accessToken != null && !accessToken.isEmpty() ? "Bearer " + accessToken : null;
 
