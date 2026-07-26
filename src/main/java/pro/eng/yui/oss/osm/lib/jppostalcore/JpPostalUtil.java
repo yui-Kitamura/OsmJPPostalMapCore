@@ -285,6 +285,27 @@ public class JpPostalUtil {
         }
     }
     
+    public static void callOsmCreateNote(String accessToken, String appName, String noteBody, long lat, long lon){
+        String fullNoteBody = noteBody + "\n\n" + appName;
+        String auth = accessToken != null && !accessToken.isEmpty() ? "Bearer " + accessToken : null;
+
+        try {
+            Response<ResponseBody> res;
+            if (auth != null) {
+                res = osmApi.createNote(auth, lat, lon, fullNoteBody).execute();
+            } else {
+                res = osmApi.createNote(lat, lon, fullNoteBody).execute();
+            }
+
+            if (!res.isSuccessful()) {
+                String errorBody = res.errorBody() != null ? res.errorBody().string() : "";
+                throw new IOException(res.message() + (errorBody.isEmpty() ? "" : ": " + errorBody));
+            }
+        } catch (IOException e) {
+            throw new IllegalStateException("Failed to create note", e);
+        }
+    }
+
     /* JpPostalDatasource処理 */
     private static final DataSourceApi dataSourceApi;
     /** 都道府県リスト

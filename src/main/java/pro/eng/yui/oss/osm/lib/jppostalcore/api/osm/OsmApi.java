@@ -51,4 +51,7 @@ public interface OsmApi {
 
     @POST("api/0.6/notes")
     Call<ResponseBody> createNote(@retrofit2.http.Query("lat") double lat, @retrofit2.http.Query("lon") double lon, @retrofit2.http.Query("text") String text);
+
+    @POST("api/0.6/notes")
+    Call<ResponseBody> createNote(@Header("Authorization") String auth, @retrofit2.http.Query("lat") double lat, @retrofit2.http.Query("lon") double lon, @retrofit2.http.Query("text") String text);
 }
