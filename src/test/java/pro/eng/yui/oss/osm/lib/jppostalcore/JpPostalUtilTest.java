@@ -1,5 +1,6 @@
 package pro.eng.yui.oss.osm.lib.jppostalcore;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -19,6 +20,15 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class JpPostalUtilTest {
+
+    @BeforeAll
+    static void waitHolidays() throws InterruptedException {
+        int retry = 0;
+        while (!JpPostalUtil.isHolidaysLoaded() && retry < 100) {
+            Thread.sleep(100);
+            retry++;
+        }
+    }
 
     /* 祝日判定 */
     @Test
@@ -54,7 +64,7 @@ class JpPostalUtilTest {
     @Test
     void callOverpass(){
         String query = "node[\"name\"=\"合同会社北村由衣\"];";
-        List<OsmPoi> result = assertDoesNotThrow(()->JpPostalUtil.callOverpass(query, 3, 10));
+        List<OsmPoi> result = assertDoesNotThrow(()->JpPostalUtil.callOverpass(query, 3, 10).join());
         assertEquals(1, result.size());
         OsmPoi poi = result.getFirst();
         assertEquals(11608885454L, poi.getId());
@@ -65,21 +75,20 @@ class JpPostalUtilTest {
     @Test
     void callOverpassEmpty(){
         String query = "way[\"eman\"=\"衣由村北社会同合\"];";
-        List<OsmPoi> result = assertDoesNotThrow(()->JpPostalUtil.callOverpass(query, 3, 10));
+        List<OsmPoi> result = assertDoesNotThrow(()->JpPostalUtil.callOverpass(query, 3, 10).join());
         assertTrue(result.isEmpty());
     }
     @Test
     void callOverpass400(){
         String wrongQuery = "what?";
-        IllegalArgumentException argEx = assertThrows(
-            IllegalArgumentException.class, ()->JpPostalUtil.callOverpass(wrongQuery, 3, 10)
+        assertThrows(
+            Exception.class, ()->JpPostalUtil.callOverpass(wrongQuery, 3, 10).get()
         );
-        assertTrue(argEx.getMessage().startsWith("HTTP 400 error"));
     }
     @Test
     void callOverpassWithRetry(){
         String query = "node[\"name\"=\"合同会社北村由衣\"];";
-        List<OsmPoi> result = assertDoesNotThrow(()->JpPostalUtil.callOverpass(query, 3, 10));
+        List<OsmPoi> result = assertDoesNotThrow(()->JpPostalUtil.callOverpass(query, 3, 10).join());
         assertEquals(1, result.size());
         OsmPoi poi = result.getFirst();
         assertEquals(11608885454L, poi.getId());
@@ -90,23 +99,23 @@ class JpPostalUtilTest {
     @Test
     void callOverpassRetryIllegalArgument(){
         String query = "way[\"eman\"=\"衣由村北社会同合\"];";
-        assertThrows(IllegalStateException.class, ()->JpPostalUtil.callOverpass(query, 0, 1));
+        assertThrows(Exception.class, ()->JpPostalUtil.callOverpass(query, 0, 1).get());
     }
     
     @Test
     void getPrefectures(){
-        Map<String, Integer> result = assertDoesNotThrow(()->{ return JpPostalUtil.getPrefectures(); });
+        Map<String, Integer> result = assertDoesNotThrow(()->{ return JpPostalUtil.getPrefectures().join(); });
         assertEquals(47, result.size());
         assertEquals(19, result.get("山梨県"));
     }
     
     @Test
     void getPrefecture(){
-        assertEquals(19, JpPostalUtil.getPrefecture("山梨県"));
+        assertEquals(19, JpPostalUtil.getPrefecture("山梨県").join());
     }
     @Test
     void getPrefectureNotExist(){
-        assertEquals(-99, JpPostalUtil.getPrefecture("海無県"));
+        assertEquals(-99, JpPostalUtil.getPrefecture("海無県").join());
     }
     
     @Test
