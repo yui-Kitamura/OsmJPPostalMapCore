@@ -311,7 +311,7 @@ public class JpPostalUtil {
      * @return 県名,コード のMap */
     public static Map<String, Integer> getPrefectures() {
         Map<String, Integer> prefectures = new HashMap<>();
-        try{    
+        try{
             Response<ResponseBody> res = dataSourceApi.masterPrefJson().execute();
             if (res.isSuccessful() == false) { throw new IOException(res.message()); }
 
