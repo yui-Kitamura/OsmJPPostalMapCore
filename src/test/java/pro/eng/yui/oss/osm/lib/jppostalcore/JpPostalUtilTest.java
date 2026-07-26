@@ -60,7 +60,6 @@ class JpPostalUtilTest {
     }
     
     /* OverpassAPIコール */
-    @Order(1)
     @Test
     void callOverpass(){
         String query = "node[\"name\"=\"合同会社北村由衣\"];";
