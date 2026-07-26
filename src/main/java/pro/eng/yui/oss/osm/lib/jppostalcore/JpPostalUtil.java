@@ -200,6 +200,11 @@ public class JpPostalUtil {
      * @return POIリストのCompletableFuture
      * */
     public static CompletableFuture<List<OsmPoi>> callOverpass(String queryBody, int maxRetry, int interval, int timeout) {
+        if (maxRetry < 1) {
+            CompletableFuture<List<OsmPoi>> future = new CompletableFuture<>();
+            future.completeExceptionally(new IllegalArgumentException("maxRetry must be at least 1"));
+            return future;
+        }
         CompletableFuture<List<OsmPoi>> future = new CompletableFuture<>();
         callOverpassInternal(queryBody, maxRetry, interval, timeout, 0, future);
         return future;
