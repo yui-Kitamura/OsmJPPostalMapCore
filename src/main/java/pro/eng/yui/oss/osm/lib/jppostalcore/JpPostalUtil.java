@@ -236,6 +236,7 @@ public class JpPostalUtil {
     
     /* OSM API コール */
     private static final OsmApi osmApi;
+    public static OsmApi getOsmApi(){ return osmApi; }
     /** ChangeSetを開く
      * @return 採番されたChangesetID
      * @throws IOException 通信失敗時などfail */
@@ -311,7 +312,7 @@ public class JpPostalUtil {
      * @return 県名,コード のMap */
     public static Map<String, Integer> getPrefectures() {
         Map<String, Integer> prefectures = new HashMap<>();
-        try{
+        try{    
             Response<ResponseBody> res = dataSourceApi.masterPrefJson().execute();
             if (res.isSuccessful() == false) { throw new IOException(res.message()); }
 
