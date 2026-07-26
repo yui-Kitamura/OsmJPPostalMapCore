@@ -103,17 +103,33 @@ public class JpPostalUtil {
                 .build();
         overpassApi = overpassRetrofit.create(OverpassApi.class);
         /* OpenStreetMap API */
+        OkHttpClient osmClient = new OkHttpClient.Builder()
+                .addInterceptor(chain -> {
+                    Request request = chain.request().newBuilder()
+                            .header("User-Agent", "OsmJPPostalMapCore/" +  buildInfo.getProperty("version"))
+                            .build();
+                    return chain.proceed(request);
+                })
+                .build();
         Retrofit osmRetrofit  = new Retrofit.Builder()
                 .baseUrl("https://api.openstreetmap.org/")
-                .client(client)
+                .client(osmClient)
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         osmApi = osmRetrofit.create(OsmApi.class);
         /* DataSourceReference */
+        OkHttpClient dsClient = new OkHttpClient.Builder()
+                .addInterceptor(chain -> {
+                    Request request = chain.request().newBuilder()
+                            .header("User-Agent", "OsmJPPostalMapCore/" +  buildInfo.getProperty("version"))
+                            .build();
+                    return chain.proceed(request);
+                })
+                .build();
         Retrofit dataRetrofit = new Retrofit.Builder()
                 .baseUrl("https://yui-kitamura.github.io/OsmJpPostalMapDataSource/")
-                .client(client)
+                .client(dsClient)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         dataSourceApi = dataRetrofit.create(DataSourceApi.class);
