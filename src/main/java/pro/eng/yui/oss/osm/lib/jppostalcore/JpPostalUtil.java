@@ -441,18 +441,7 @@ public class JpPostalUtil {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     try {
-                        String jsonString = response.body().string();
-                        Map<String, Integer> prefectures = new HashMap<>();
-                        Gson gson = new Gson();
-                        JsonArray jsonArray = gson.fromJson(jsonString, JsonArray.class);
-
-                        for (int i = 0; i < jsonArray.size(); i++) {
-                            JsonObject obj = jsonArray.get(i).getAsJsonObject();
-                            String name = obj.get("name").getAsString();
-                            int code = Integer.parseInt(obj.get("code").getAsString());
-                            prefectures.put(name, code);
-                        }
-                        future.complete(prefectures);
+                        future.complete(parseMasterJson(response.body().string()));
                     } catch (Exception e) {
                         future.completeExceptionally(e);
                     }
@@ -492,17 +481,7 @@ public class JpPostalUtil {
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     if (response.isSuccessful() && response.body() != null) {
                         try {
-                            String jsonString = response.body().string();
-                            List<OsmPoi> prefectureDataList = new ArrayList<>();
-                            Gson gson = new Gson();
-                            JsonObject prefDataObj = gson.fromJson(jsonString, JsonObject.class);
-                            JsonArray jsonArray = prefDataObj.get("data").getAsJsonArray();
-
-                            for (int i = 0; i < jsonArray.size(); i++) {
-                                JsonObject obj = jsonArray.get(i).getAsJsonObject();
-                                prefectureDataList.add(new OsmPoi(obj));
-                            }
-                            future.complete(prefectureDataList);
+                            future.complete(parsePoiData(response.body().string()));
                         } catch (Exception e) {
                             future.completeExceptionally(e);
                         }
@@ -518,6 +497,115 @@ public class JpPostalUtil {
             });
             return future;
         });
+    }
+
+    /** サブエリアリスト
+     * @return エリア名,コード のMapのCompletableFuture
+     */
+    public static CompletableFuture<Map<String, Integer>> getSubAreas(String prefName) {
+        return getPrefecture(prefName).thenCompose(prefCode -> {
+            if (prefCode < 0) {
+                CompletableFuture<Map<String, Integer>> failed = new CompletableFuture<>();
+                failed.completeExceptionally(new IllegalArgumentException("都道府県名不正"));
+                return failed;
+            }
+            CompletableFuture<Map<String, Integer>> future = new CompletableFuture<>();
+            dataSourceApi.masterSubJson(String.format("%02d", prefCode)).enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        try {
+                            future.complete(parseMasterJson(response.body().string()));
+                        } catch (Exception e) {
+                            future.completeExceptionally(e);
+                        }
+                    } else {
+                        future.completeExceptionally(new IOException(response.message()));
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    future.completeExceptionally(t);
+                }
+            });
+            return future;
+        });
+    }
+
+    /** 都道府県名とサブエリア名からサブエリアコードを返します
+     * @return サブエリアコードのCompletableFuture
+     */
+    public static CompletableFuture<Integer> getSubArea(String prefName, String subAreaName) {
+        return getSubAreas(prefName).thenApply(subs -> subs.getOrDefault(subAreaName, -99));
+    }
+
+    /** 都道府県のサブエリアデータセットをDataSourceから取得します
+     * @return POIリストのCompletableFuture
+     */
+    public static CompletableFuture<List<OsmPoi>> getPoiData(String prefName, String subAreaName) {
+        return getPrefecture(prefName).thenCompose(prefCode -> {
+            if (prefCode < 0) {
+                CompletableFuture<List<OsmPoi>> failed = new CompletableFuture<>();
+                failed.completeExceptionally(new IllegalArgumentException("都道府県名不正"));
+                return failed;
+            }
+            return getSubArea(prefName, subAreaName).thenCompose(subCode -> {
+                if (subCode < 0) {
+                    CompletableFuture<List<OsmPoi>> failed = new CompletableFuture<>();
+                    failed.completeExceptionally(new IllegalArgumentException("サブエリア名不正"));
+                    return failed;
+                }
+                CompletableFuture<List<OsmPoi>> future = new CompletableFuture<>();
+                dataSourceApi.getSubAreaData(String.format("%02d", prefCode), String.format("%02d", subCode)).enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            try {
+                                future.complete(parsePoiData(response.body().string()));
+                            } catch (Exception e) {
+                                future.completeExceptionally(e);
+                            }
+                        } else {
+                            future.completeExceptionally(new IOException(response.message()));
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        future.completeExceptionally(t);
+                    }
+                });
+                return future;
+            });
+        });
+    }
+
+    private static Map<String, Integer> parseMasterJson(String jsonString) {
+        Map<String, Integer> masterMap = new HashMap<>();
+        Gson gson = new Gson();
+        JsonArray jsonArray = gson.fromJson(jsonString, JsonArray.class);
+
+        for (int i = 0; i < jsonArray.size(); i++) {
+            JsonObject obj = jsonArray.get(i).getAsJsonObject();
+            String name = obj.get("name").getAsString();
+            int code = Integer.parseInt(obj.get("code").getAsString());
+            masterMap.put(name, code);
+        }
+        return masterMap;
+    }
+
+    private static List<OsmPoi> parsePoiData(String jsonString) {
+        List<OsmPoi> poiList = new ArrayList<>();
+        Gson gson = new Gson();
+        JsonObject dataObj = gson.fromJson(jsonString, JsonObject.class);
+        JsonArray jsonArray = dataObj.get("data").getAsJsonArray();
+
+        for (int i = 0; i < jsonArray.size(); i++) {
+            JsonObject obj = jsonArray.get(i).getAsJsonObject();
+            poiList.add(new OsmPoi(obj));
+        }
+        return poiList;
     }
 
     /* opening_hours, collection_times 処理 */

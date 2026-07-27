@@ -112,7 +112,23 @@ class JpPostalUtilTest {
     void getPrefectureNotExist(){
         assertEquals(-99, JpPostalUtil.getPrefecture("海無県").join());
     }
-    
+
+    @Test
+    void getSubAreas(){
+        Map<String, Integer> result = assertDoesNotThrow(()->{ return JpPostalUtil.getSubAreas("北海道").join(); });
+        System.out.println("SubAreas of Hokkaido: " + result);
+        assertEquals(1, result.get("石狩振興局"));
+    }
+
+    @Test
+    void getPoiDataSubArea(){
+        List<OsmPoi> result = assertDoesNotThrow(()->{ return JpPostalUtil.getPoiData("北海道", "石狩振興局").join(); });
+        assertFalse(result.isEmpty());
+        for(OsmPoi poi : result){
+            assertEquals("北海道", poi.getTag("addr:province"));
+        }
+    }
+
     @Test
     void decodeCollectionTime(){
         CollectionTimes value = new CollectionTimes("Mo-Su,PH 7:30,8:50,12:30,13:55,15:40,19:00;");
