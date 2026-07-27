@@ -6,14 +6,19 @@ public class OverpassQuery {
     
     /** 都道府県単位で抽出 */
     public static String getPostSearchQuery(String prefName){
+        return getPostSearchQuery(4,  prefName);
+    }
+    /** 任意行政区単位で抽出 */
+    public static String getPostSearchQuery(int adminLevel, String areaName){
         return
-            "area[\"boundary\"=\"administrative\"][\"admin_level\"=\"4\"][\"name\"=\""+ prefName +"\"]->.a;"+
+            "area[\"boundary\"=\"administrative\"][\"admin_level\"="+adminLevel+"][\"name\"=\""+ areaName +"\"]->.a;"+
             "(" +
             "  node(area.a)[\"amenity\"=\"post_box\"];" +
             "  nw(area.a)[\"amenity\"=\"post_office\"][!\"operator\"];" +
             "  nw(area.a)[\"amenity\"=\"post_office\"][\"operator\"=\"日本郵便\"];" +
             ");";
     }
+    
     /** 座標中心から20kmを抽出 */
     public static String getPostSearchQuery(long lat, long lon, int km){
         int m = km * 1_000;
