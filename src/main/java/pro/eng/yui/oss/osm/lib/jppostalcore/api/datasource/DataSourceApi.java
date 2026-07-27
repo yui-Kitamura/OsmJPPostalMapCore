@@ -6,10 +6,10 @@ import retrofit2.http.*;
 
 public interface DataSourceApi {
     
-    @GET("data/master/pref.json")
+    @GET("master/pref.json")
     Call<ResponseBody> masterPrefJson();
 
-    @GET("data/master/sub/{prefCode}.json")
+    @GET("master/sub/{prefCode}.json")
     Call<ResponseBody> masterSubJson(@Path("prefCode") String prefCode);
 
     @GET("data/jPostal_{code}.json")
