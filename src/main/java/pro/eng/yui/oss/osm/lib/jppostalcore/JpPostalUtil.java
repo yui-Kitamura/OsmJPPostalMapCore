@@ -581,6 +581,78 @@ public class JpPostalUtil {
         });
     }
 
+    /** 指定したエリアの境界ボックスを取得します
+     * @param prefName 都道府県名
+     * @param subAreaName サブエリア名 (null可)
+     * @return BBoxのCompletableFuture
+     */
+    public static CompletableFuture<BBox> getBoundary(String prefName, String subAreaName) {
+        return getPrefecture(prefName).thenCompose(prefCode -> {
+            if (prefCode < 0) {
+                CompletableFuture<BBox> failed = new CompletableFuture<>();
+                failed.completeExceptionally(new IllegalArgumentException("都道府県名不正"));
+                return failed;
+            }
+
+            CompletableFuture<String> targetCodeFuture;
+            if (subAreaName != null && !subAreaName.isEmpty()) {
+                targetCodeFuture = getSubArea(prefName, subAreaName).thenApply(subCode -> {
+                    if (subCode < 0) {
+                        throw new IllegalArgumentException("サブエリア名不正");
+                    }
+                    return String.format("%02d_%02d", prefCode, subCode);
+                });
+            } else {
+                targetCodeFuture = CompletableFuture.completedFuture(String.format("%02d", prefCode));
+            }
+
+            return targetCodeFuture.thenCompose(targetCode -> {
+                CompletableFuture<BBox> future = new CompletableFuture<>();
+                dataSourceApi.masterBoundaryJson().enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            try {
+                                String jsonString = response.body().string();
+                                Gson gson = new Gson();
+                                JsonObject root = gson.fromJson(jsonString, JsonObject.class);
+
+                                String prefCodeStr = String.format("%02d", prefCode);
+                                String subCodeStr = subAreaName != null ? targetCode.substring(3) : "00";
+
+                                if (root.has(prefCodeStr)) {
+                                    JsonObject prefObj = root.getAsJsonObject(prefCodeStr);
+                                    JsonObject subObj = prefObj.getAsJsonObject("sub");
+                                    if (subObj.has(subCodeStr)) {
+                                        JsonObject bboxObj = subObj.getAsJsonObject(subCodeStr);
+                                        future.complete(new BBox(
+                                                bboxObj.get("minLat").getAsDouble(),
+                                                bboxObj.get("minLon").getAsDouble(),
+                                                bboxObj.get("maxLat").getAsDouble(),
+                                                bboxObj.get("maxLon").getAsDouble()
+                                        ));
+                                        return;
+                                    }
+                                }
+                                future.complete(null);
+                            } catch (Exception e) {
+                                future.completeExceptionally(e);
+                            }
+                        } else {
+                            future.completeExceptionally(new IOException(response.message()));
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        future.completeExceptionally(t);
+                    }
+                });
+                return future;
+            });
+        });
+    }
+
     private static Map<String, Integer> parseMasterJson(String jsonString) {
         Map<String, Integer> masterMap = new HashMap<>();
         Gson gson = new Gson();
@@ -631,78 +703,5 @@ public class JpPostalUtil {
     public static JpAddress getAddress(Map<String,String> tags){
         return JpAddress.of(tags);
     }
-
-    /** 指定したエリアの境界ボックスを取得します
-     * @param prefName 都道府県名
-     * @param subAreaName サブエリア名 (null可)
-     * @return BBoxのCompletableFuture
-     */
-    public static CompletableFuture<BBox> getBoundary(String prefName, String subAreaName) {
-        return getPrefecture(prefName).thenCompose(prefCode -> {
-            if (prefCode < 0) {
-                CompletableFuture<BBox> failed = new CompletableFuture<>();
-                failed.completeExceptionally(new IllegalArgumentException("都道府県名不正"));
-                return failed;
-            }
-
-            CompletableFuture<String> targetCodeFuture;
-            if (subAreaName != null && !subAreaName.isEmpty()) {
-                targetCodeFuture = getSubArea(prefName, subAreaName).thenApply(subCode -> {
-                    if (subCode < 0) {
-                        throw new IllegalArgumentException("サブエリア名不正");
-                    }
-                    return String.format("%02d_%02d", prefCode, subCode);
-                });
-            } else {
-                targetCodeFuture = CompletableFuture.completedFuture(String.format("%02d", prefCode));
-            }
-
-            return targetCodeFuture.thenCompose(targetCode -> {
-                CompletableFuture<BBox> future = new CompletableFuture<>();
-                dataSourceApi.masterBoundaryJson().enqueue(new Callback<ResponseBody>() {
-                    @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        if (response.isSuccessful() && response.body() != null) {
-                            try {
-                                String jsonString = response.body().string();
-                                Gson gson = new Gson();
-                                JsonObject root = gson.fromJson(jsonString, JsonObject.class);
-                                
-                                String prefCodeStr = String.format("%02d", prefCode);
-                                String subCodeStr = subAreaName != null ? targetCode.substring(3) : "00";
-
-                                if (root.has(prefCodeStr)) {
-                                    JsonObject prefObj = root.getAsJsonObject(prefCodeStr);
-                                    JsonObject subObj = prefObj.getAsJsonObject("sub");
-                                    if (subObj.has(subCodeStr)) {
-                                        JsonObject bboxObj = subObj.getAsJsonObject(subCodeStr);
-                                        future.complete(new BBox(
-                                                bboxObj.get("minLat").getAsDouble(),
-                                                bboxObj.get("minLon").getAsDouble(),
-                                                bboxObj.get("maxLat").getAsDouble(),
-                                                bboxObj.get("maxLon").getAsDouble()
-                                        ));
-                                        return;
-                                    }
-                                }
-                                future.complete(null);
-                            } catch (Exception e) {
-                                future.completeExceptionally(e);
-                            }
-                        } else {
-                            future.completeExceptionally(new IOException(response.message()));
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-                        future.completeExceptionally(t);
-                    }
-                });
-                return future;
-            });
-        });
-    }
-
 
 }
