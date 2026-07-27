@@ -3,6 +3,7 @@ package pro.eng.yui.oss.osm.lib.jppostalcore;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import pro.eng.yui.oss.osm.lib.jppostalcore.parser.CollectionTimeParser;
+import pro.eng.yui.oss.osm.lib.jppostalcore.types.BBox;
 import pro.eng.yui.oss.osm.lib.jppostalcore.types.CollectionTimes;
 import pro.eng.yui.oss.osm.lib.jppostalcore.types.Days;
 import pro.eng.yui.oss.osm.lib.jppostalcore.types.JpAddress;
@@ -116,7 +117,6 @@ class JpPostalUtilTest {
     @Test
     void getSubAreas(){
         Map<String, Integer> result = assertDoesNotThrow(()->{ return JpPostalUtil.getSubAreas("北海道").join(); });
-        System.out.println("SubAreas of Hokkaido: " + result);
         assertEquals(1, result.get("石狩振興局"));
     }
 
@@ -124,6 +124,21 @@ class JpPostalUtilTest {
     void getPoiDataSubArea(){
         List<OsmPoi> result = assertDoesNotThrow(()->{ return JpPostalUtil.getPoiData("北海道", "石狩振興局").join(); });
         assertFalse(result.isEmpty());
+    }
+
+    @Test
+    void getBoundaryPref(){
+        BBox result = assertDoesNotThrow(()->{ return JpPostalUtil.getBoundary("北海道", null).join(); });
+        assertNotNull(result);
+        assertTrue(result.getMinLat() < result.getMaxLat());
+        assertTrue(result.getMinLon() < result.getMaxLon());
+    }
+
+    @Test
+    void getBoundarySubArea(){
+        BBox result = assertDoesNotThrow(()->{ return JpPostalUtil.getBoundary("北海道", "石狩振興局").join(); });
+        assertNotNull(result);
+        assertTrue(result.getMinLat() < result.getMaxLat());
     }
 
     @Test
