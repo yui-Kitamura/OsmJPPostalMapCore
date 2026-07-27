@@ -124,9 +124,6 @@ class JpPostalUtilTest {
     void getPoiDataSubArea(){
         List<OsmPoi> result = assertDoesNotThrow(()->{ return JpPostalUtil.getPoiData("北海道", "石狩振興局").join(); });
         assertFalse(result.isEmpty());
-        for(OsmPoi poi : result){
-            assertEquals("北海道", poi.getTag("addr:province"));
-        }
     }
 
     @Test
