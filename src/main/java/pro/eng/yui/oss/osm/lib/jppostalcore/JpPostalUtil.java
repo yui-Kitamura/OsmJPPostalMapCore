@@ -269,8 +269,8 @@ public class JpPostalUtil {
                     future.complete(resultPois);
                 } else {
                     int code = response.code();
-                    if (429 == code) {
-                        future.completeExceptionally(new IllegalStateException("HTTP 429" + response.message()));
+                    if (429 == code || 504 == code) {
+                        future.completeExceptionally(new IllegalStateException("HTTP "+ code + response.message()));
                     } else if (400 <= code && code < 500) {
                         future.completeExceptionally(new IllegalArgumentException("HTTP " + code + " error: " + response.message()));
                     } else {
