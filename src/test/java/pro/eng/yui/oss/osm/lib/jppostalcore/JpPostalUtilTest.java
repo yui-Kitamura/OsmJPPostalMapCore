@@ -1,10 +1,7 @@
 package pro.eng.yui.oss.osm.lib.jppostalcore;
 
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
 import pro.eng.yui.oss.osm.lib.jppostalcore.parser.CollectionTimeParser;
 import pro.eng.yui.oss.osm.lib.jppostalcore.types.CollectionTimes;
 import pro.eng.yui.oss.osm.lib.jppostalcore.types.Days;
@@ -18,7 +15,6 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class JpPostalUtilTest {
 
     @BeforeAll
