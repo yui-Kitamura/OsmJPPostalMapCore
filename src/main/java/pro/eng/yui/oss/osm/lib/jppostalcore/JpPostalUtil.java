@@ -216,7 +216,7 @@ public class JpPostalUtil {
             if (ex == null) {
                 future.complete(res);
             } else {
-                if (tryCount + 1 < maxRetry) {
+                if (tryCount + 1 < maxRetry && (ex instanceof IllegalStateException || ex instanceof IOException)) {
                     CompletableFuture.runAsync(() -> {
                         try {
                             TimeUnit.SECONDS.sleep(interval);
@@ -270,7 +270,7 @@ public class JpPostalUtil {
                 } else {
                     int code = response.code();
                     if (429 == code || 504 == code) {
-                        future.completeExceptionally(new IllegalStateException("HTTP "+ code + response.message()));
+                        future.completeExceptionally(new IllegalStateException("HTTP " + code + " " + response.message()));
                     } else if (400 <= code && code < 500) {
                         future.completeExceptionally(new IllegalArgumentException("HTTP " + code + " error: " + response.message()));
                     } else {
