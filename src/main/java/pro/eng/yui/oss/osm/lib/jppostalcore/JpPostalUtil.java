@@ -21,6 +21,8 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import retrofit2.http.GET;
+import retrofit2.http.Path;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -579,6 +581,35 @@ public class JpPostalUtil {
                 return future;
             });
         });
+    }
+
+    /**
+     * 都道府県bboxリストのJSONを生データで取得します
+     *
+     * @return JSON文字列のCompletableFuture
+     */
+    public static CompletableFuture<String> getRawPrefecturesJson() {
+        CompletableFuture<String> future = new CompletableFuture<>();
+        dataSourceApi.masterBoundaryJson().enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    try {
+                        future.complete(response.body().string());
+                    } catch (IOException e) {
+                        future.completeExceptionally(e);
+                    }
+                } else {
+                    future.completeExceptionally(new IOException(response.message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                future.completeExceptionally(t);
+            }
+        });
+        return future;
     }
 
     /** 指定したエリアの境界ボックスを取得します
