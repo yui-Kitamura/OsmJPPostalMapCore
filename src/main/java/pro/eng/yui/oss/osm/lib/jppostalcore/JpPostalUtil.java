@@ -491,6 +491,8 @@ public class JpPostalUtil {
                         } catch (Exception e) {
                             future.completeExceptionally(e);
                         }
+                    } else if (response.code() == 404) {
+                        future.complete(new ArrayList<>());
                     } else {
                         future.completeExceptionally(new IOException(response.message()));
                     }
