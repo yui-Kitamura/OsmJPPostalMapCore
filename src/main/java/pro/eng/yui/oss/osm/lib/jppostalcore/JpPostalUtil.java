@@ -527,6 +527,8 @@ public class JpPostalUtil {
                         } catch (Exception e) {
                             future.completeExceptionally(e);
                         }
+                    } else if (response.code() == 404) {
+                        future.complete(new HashMap<>());
                     } else {
                         future.completeExceptionally(new IOException(response.message()));
                     }
