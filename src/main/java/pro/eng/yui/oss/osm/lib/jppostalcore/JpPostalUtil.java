@@ -65,9 +65,13 @@ public class JpPostalUtil {
 
         /* OverpassAPI */
         OkHttpClient client = new OkHttpClient.Builder()
+                .connectTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(210, TimeUnit.SECONDS)
+                .writeTimeout(30, TimeUnit.SECONDS)
                 .addInterceptor(chain -> {
                     Request request = chain.request().newBuilder()
-                            .header("User-Agent", "OsmJPPostalMapCore/" +  buildInfo.getProperty("version"))
+                            .header("User-Agent", "OsmJPPostalMapCore/" +  buildInfo.getProperty("version")
+                                    + " https://github.com/yui-kitamura/OsmJPPostalMapCore")
                             .build();
                     return chain.proceed(request);
                 })
