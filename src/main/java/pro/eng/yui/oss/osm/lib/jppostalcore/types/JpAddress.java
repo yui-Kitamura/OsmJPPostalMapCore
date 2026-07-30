@@ -58,7 +58,7 @@ public class JpAddress {
     public Avail isQuarterAvail(){ return isQuarterAvail; }
     private String quarter;
     public void setQuarter(String value){
-        this.quarter = value; this.isQuarterAvail = isAvail(value);
+        this.quarter = value; this.isQuarterAvail = isQuarterAvail(value);
     }
     public String getQuarter(){ return quarter; }
 
@@ -67,6 +67,7 @@ public class JpAddress {
     private String neighbourhood;
     public void setNeighbourhood(String value) {
         this.neighbourhood = value; this.isNeighbourhoodAvail = isAvail(value);
+        this.isQuarterAvail = isQuarterAvail(this.quarter);
     }
     public String getNeighbourhood() {
         return neighbourhood;
@@ -247,6 +248,13 @@ public class JpAddress {
         if (isNotEmpty(value)){
             char lastChar = value.charAt(value.length() - 1);
             return (lastChar == '区') ? Avail.YES : Avail.NO;
+        }
+        return Avail.UNSET;
+    }
+
+    public Avail isQuarterAvail(String value){
+        if (isNotEmpty(value)) {
+            return isNotEmpty(this.neighbourhood) ? Avail.YES : Avail.NO;
         }
         return Avail.UNSET;
     }
