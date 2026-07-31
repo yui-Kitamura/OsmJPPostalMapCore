@@ -360,12 +360,14 @@ public class JpPostalUtil {
      * @param accessToken OSMのTOKEN
      * @param changeSetInfo idを格納してあること
      * @param poi 対象POIの全情報
+     * @return type#id のCompletableFuture
      */
-    public static CompletableFuture<Void> callOsmCreateOrModifyElement(String accessToken, ChangeSetInfo changeSetInfo, OsmPoi poi) {
-        CompletableFuture<Void> future = new CompletableFuture<>();
+    public static CompletableFuture<String> callOsmCreateOrModifyElement(String accessToken, ChangeSetInfo changeSetInfo, OsmPoi poi) {
+        CompletableFuture<String> future = new CompletableFuture<>();
         String auth = "Bearer " + accessToken;
         Call<String> call;
-        if (poi.getVer() == 0) {
+        boolean isCreate = (poi.getVer() == 0);
+        if (isCreate) {
             String xml = CreateXML.createElement(changeSetInfo, poi);
             call = osmApi.createElement(auth, poi.getType(), xml);
         } else {
@@ -377,7 +379,8 @@ public class JpPostalUtil {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 if (response.isSuccessful()) {
-                    future.complete(null);
+                    String id = isCreate ? response.body() : String.valueOf(poi.getId());
+                    future.complete(poi.getType() + "#" + (id != null ? id.trim() : ""));
                 } else {
                     String errorBody = "";
                     try (ResponseBody body = response.errorBody()) {
