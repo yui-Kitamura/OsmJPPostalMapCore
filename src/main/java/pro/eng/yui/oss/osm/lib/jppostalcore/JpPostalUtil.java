@@ -722,6 +722,34 @@ public class JpPostalUtil {
         return poiList;
     }
 
+    /**
+     * 市町村bboxリストのJSONを生データで取得します
+     * @return JSON文字列のCompletableFuture
+     */
+    public static CompletableFuture<String> getRawCityJson() {
+        CompletableFuture<String> future = new CompletableFuture<>();
+        dataSourceApi.masterCitySuburbJson().enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    try {
+                        future.complete(response.body().string());
+                    } catch (IOException e) {
+                        future.completeExceptionally(e);
+                    }
+                } else {
+                    future.completeExceptionally(new IOException(response.message()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                future.completeExceptionally(t);
+            }
+        });
+        return future;
+    }
+
     /* opening_hours, collection_times 処理 */
     public static Map<Days, OpeningHoursParser.DaySchedule> decodeOpeningHours(OpeningHours tagValue){
         return openingHoursParser.decode(tagValue);
