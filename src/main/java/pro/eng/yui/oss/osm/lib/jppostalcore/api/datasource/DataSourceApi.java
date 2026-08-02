@@ -17,6 +17,9 @@ public interface DataSourceApi {
     
     @GET("master/cityAndSubrub.json")
     Call<ResponseBody> masterCitySuburbJson();
+    
+    @GET("data/officeList.json")
+    Call<ResponseBody> dataPostOffice();
 
     @GET("data/jPostal_{code}.json")
     Call<ResponseBody> getPrefData(@Path("code") String code);
