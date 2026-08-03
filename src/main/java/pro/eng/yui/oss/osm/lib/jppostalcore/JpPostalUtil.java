@@ -751,7 +751,7 @@ public class JpPostalUtil {
     }
 
     /**
-     * 市町村bboxリストのJSONを生データで取得します
+     * 郵便局名リストのJSONを生データで取得します
      * @return JSON文字列のCompletableFuture
      */
     public static CompletableFuture<String> getRawOfficeJson() {
