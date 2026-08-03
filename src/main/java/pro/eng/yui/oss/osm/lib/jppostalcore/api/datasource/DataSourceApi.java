@@ -15,7 +15,7 @@ public interface DataSourceApi {
     @GET("master/boundary.json")
     Call<ResponseBody> masterBoundaryJson();
     
-    @GET("master/cityAndSubrub.json")
+    @GET("master/cityAndSuburb.json")
     Call<ResponseBody> masterCitySuburbJson();
     
     @GET("data/officeList.json")
