@@ -164,9 +164,9 @@ public class JpAddress {
             if (isBlockNumberAvail != Avail.UNSET) { builder.append(block_number); }
             if (isHousenumberAvail != Avail.UNSET) { builder.append(housenumber); }
         }
-        if (isHousenameAvail != Avail.UNSET) { builder.append(" ").append(housename).append(" "); }
+        if (isHousenameAvail != Avail.UNSET) { builder.append(" ").append(housename); }
         if (isFloorAvail != Avail.UNSET) {
-            builder.append(floor);
+            builder.append(" ").append(floor);
             if (!floor.endsWith("階") && !floor.endsWith("F")){ builder.append("階"); }
         }
         if (isRoomAvail != Avail.UNSET) { builder.append(room); }
