@@ -105,13 +105,13 @@ public class JpAddress {
     }
     public String getFloor(){ return floor; }
 
-    private Avail isRoomAvail = Avail.UNSET;
-    public Avail isRoomAvail(){ return isRoomAvail; }
-    private String room;
-    public void setRoom(String value){
-        this.room = value; this.isRoomAvail = isAvail(value);
+    private Avail isUnitAvail = Avail.UNSET;
+    public Avail isUnitAvail(){ return isUnitAvail; }
+    private String unit;
+    public void setUnit(String value){
+        this.unit = value; this.isUnitAvail = isAvail(value);
     }
-    public String getRoom(){ return room; }
+    public String getUnit(){ return unit; }
 
     /** YES or UNSET */
     private Avail isFullAvail = Avail.UNSET;
@@ -130,7 +130,7 @@ public class JpAddress {
         this.housenumber = null; isHousenumberAvail = Avail.UNSET;
         this.housename = null; isHousenameAvail = Avail.UNSET;
         this.floor = null; isFloorAvail = Avail.UNSET;
-        this.room = null; isRoomAvail = Avail.UNSET;
+        this.unit = null; isUnitAvail = Avail.UNSET;
     }
     public String getFull(){ return full; }
 
@@ -169,7 +169,7 @@ public class JpAddress {
             builder.append(" ").append(floor);
             if (!floor.endsWith("階") && !floor.endsWith("F")){ builder.append("階"); }
         }
-        if (isRoomAvail != Avail.UNSET) { builder.append(room); }
+        if (isUnitAvail != Avail.UNSET) { builder.append(unit); }
         return builder.toString().trim();
     }
 
@@ -191,7 +191,7 @@ public class JpAddress {
         setHousenumber(tags.get("addr:housenumber"));
         setHousename(tags.get("addr:housename"));
         setFloor(tags.get("addr:floor"));
-        setRoom(tags.get("addr:room"));
+        setUnit(tags.get("addr:unit"));
     }
     /** ヘルパーメソッド 文字列が有効か判定する */
     private boolean isNotEmpty(String value) {

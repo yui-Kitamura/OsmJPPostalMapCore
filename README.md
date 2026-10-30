@@ -22,3 +22,6 @@ import pro.eng.yui.oss.osm.lib.jppostalcore.JpPostalUtil;
 JpPostalUtil.callMethods(with_args);
 ```
 
+## 住所の部屋番号タグ
+3.4.0から部屋番号は `addr:unit` を使用します。`JpAddress` の `setRoom`、`getRoom`、`isRoomAvail` はそれぞれ `setUnit`、`getUnit`、`isUnitAvail` に変更され、`addr:room` は読み込まれません。
+
