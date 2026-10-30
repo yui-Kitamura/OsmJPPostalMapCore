@@ -28,7 +28,21 @@ jobs:
           gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
           gpg-passphrase: MAVEN_GPG_PASSPHRASE
 
+      # Keep Maven 3.9.16 pinned while Maven 3.10 produces invalid bundle metadata for Central.
+      - name: Install Maven 3.9.16
+        shell: bash
+        run: |
+          maven_archive="$RUNNER_TEMP/apache-maven-3.9.16-bin.tar.gz"
+          curl --fail --location --silent --show-error \
+            --output "$maven_archive" \
+            https://downloads.apache.org/maven/maven-3/3.9.16/binaries/apache-maven-3.9.16-bin.tar.gz
+          echo "831a8591fe20c8243b1dbe7d71e3244f31d1665b0804b2e825e38cbbe5ce0cafb8338851f90780735568773e0a6cd07bbec107cda0b896b008b861075358b6f6  $maven_archive" | sha512sum --check --strict
+          tar -xzf "$maven_archive" -C "$RUNNER_TEMP"
+          echo "$RUNNER_TEMP/apache-maven-3.9.16/bin" >> "$GITHUB_PATH"
+
       - name: Publish to Maven Central
-        run: mvn -B deploy -Prelease
+        run: |
+          mvn --version
+          mvn -B deploy -Prelease
         env:
           MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
