@@ -184,7 +184,7 @@ class JpPostalUtilTest {
         addrMap.put("addr:housenumber", "2");
         addrMap.put("addr:housename", "JPタワー");
         addrMap.put("addr:floor", "2F");
-        addrMap.put("addr:room", "201");
+        addrMap.put("addr:unit", "201");
         JpAddress address = JpPostalUtil.getAddress(addrMap);
         assertEquals("〒100-8994 東京都架空郡架空町架空区架空字雲7-2 JPタワー 2F201", address.toString());
         assertEquals("100-8994", address.getPostcode());
@@ -198,6 +198,6 @@ class JpPostalUtilTest {
         assertEquals("2", address.getHousenumber());
         assertEquals("JPタワー", address.getHousename());
         assertEquals("2F", address.getFloor());
-        assertEquals("201", address.getRoom());
+        assertEquals("201", address.getUnit());
     }
 }
