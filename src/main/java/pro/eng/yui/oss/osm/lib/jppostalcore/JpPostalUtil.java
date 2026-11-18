@@ -7,6 +7,7 @@ import pro.eng.yui.oss.osm.lib.jppostalcore.api.datasource.DataSourceApi;
 import pro.eng.yui.oss.osm.lib.jppostalcore.api.osm.ChangeSetInfo;
 import pro.eng.yui.oss.osm.lib.jppostalcore.api.osm.CreateXML;
 import pro.eng.yui.oss.osm.lib.jppostalcore.api.osm.OsmApi;
+import pro.eng.yui.oss.osm.lib.jppostalcore.api.osm.OsmOAuthApi;
 import pro.eng.yui.oss.osm.lib.jppostalcore.api.overpass.OverpassApi;
 import pro.eng.yui.oss.osm.lib.jppostalcore.api.overpass.OverpassResponse;
 import pro.eng.yui.oss.osm.lib.jppostalcore.parser.CollectionTimeParser;
@@ -98,6 +99,13 @@ public class JpPostalUtil {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         osmApi = osmRetrofit.create(OsmApi.class);
+        Retrofit osmOAuthRetrofit = new Retrofit.Builder()
+                .baseUrl("https://www.openstreetmap.org/")
+                .client(osmClient)
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        osmOAuthApi = osmOAuthRetrofit.create(OsmOAuthApi.class);
         /* DataSourceReference */
         OkHttpClient dsClient = new OkHttpClient.Builder()
                 .addInterceptor(chain -> {
@@ -295,7 +303,10 @@ public class JpPostalUtil {
     
     /* OSM API コール */
     private static final OsmApi osmApi;
+    private static final OsmOAuthApi osmOAuthApi;
     public static OsmApi getOsmApi(){ return osmApi; }
+    /** OAuthトークン取得APIを返します */
+    public static OsmOAuthApi getOsmOAuthApi(){ return osmOAuthApi; }
     /** ChangeSetを開く
      * @return 採番されたChangesetIDのCompletableFuture
      */
